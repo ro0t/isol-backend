@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="12px" height="22px" viewBox="0 0 12 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>icons/next</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="CMS" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Menu" transform="translate(-232.000000, -35.000000)" fill-rule="nonzero" fill="#497DC7">
+            <g id="icons/next" transform="translate(237.644351, 46.000000) scale(-1, -1) translate(-237.644351, -46.000000) translate(231.644351, 35.000000)">
+                <path d="M1.52748117,10.9804393 L11.4458912,1.06202929 C11.6898243,0.818096234 11.6898243,0.426882845 11.4458912,0.182949791 C11.2019582,-0.0609832636 10.8107448,-0.0609832636 10.5668117,0.182949791 L0.206560669,10.5432008 C-0.0373723849,10.7871339 -0.0373723849,11.1783473 0.206560669,11.4222803 L10.5668117,21.7779289 C10.686477,21.8975941 10.8475649,21.9620293 11.0040502,21.9620293 C11.1605356,21.9620293 11.3216234,21.9021967 11.4412887,21.7779289 C11.6852218,21.5339958 11.6852218,21.1427824 11.4412887,20.8988494 L1.52748117,10.9804393 Z" id="Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,126 @@
+aside#igw-sidebar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 80px;
+    height: 100%;
+    background: $brand-secondary;
+    z-index: 101;
+    @include transition(width .21s ease-in-out);
+
+    .logo {
+        width: 100%;
+        height: 80px;
+        background: rgba(0,0,0,.4);
+        position: relative;
+
+        &:before {
+            content: '';
+            display: block;
+            background: url(/igw/logo.svg) no-repeat;
+            background-size: 100%;
+            width: 30px;
+            height: 23px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateY(-50%) translateX(-50%);
+        }
+    }
+
+    nav {
+        a {
+            width: 100%;
+            height: 80px;
+            padding: 0 $gutter;
+            line-height: 80px;
+            display: block;
+            position: relative;
+            color: rgba(0,0,0,.4);
+            text-decoration: none;
+            font-size: 14px;
+            font-family: GraphikMd, sans-serif;
+
+            span {
+                visibility: hidden;
+                opacity: 0;
+                position: relative;
+                left: 45px;
+                @include transition(all .2s ease-in-out);
+            }
+
+            &:before {
+                content: '';
+                display: block;
+                background-color: #04152D;
+                position: absolute;
+                top: 50%;
+                left: $gutter + 2;
+                transform: translateY(-50%);
+                @include transition(all .2s ease-in-out);
+            }
+
+            &.products:before {
+                left: $gutter;
+                width: 31px;
+                height: 31px;
+                @include mask('/igw/icons/menu/products.svg');
+            }
+
+            &.categories:before {
+                width: 28px;
+                height: 27px;
+                @include mask('/igw/icons/menu/categories.svg');
+            }
+
+            &.settings:before {
+                width: 25px;
+                height: 26px;
+                @include mask('/igw/icons/menu/settings.svg');
+            }
+
+            &.pages:before {
+                width: 25px;
+                height: 32px;
+                @include mask('/igw/icons/menu/pages.svg');
+            }
+
+            &.manufacturer:before {
+                width: 29px;
+                height: 29px;
+                @include mask('/igw/icons/menu/manufacturer.svg');
+            }
+
+            &:hover {
+                &:before {
+                    background-color: $brand-primary;
+                }
+
+                span {
+                    color: #fff;
+                }
+            }
+
+            &.active {
+                &:before {
+                    background-color: #fff;
+                }
+
+                span {
+                    color: #fff;
+                }
+            }
+        }
+    }
+
+    &:hover {
+        width: 250px;
+
+        a {
+            span {
+                visibility: visible;
+                opacity: 1;
+            }
+        }
+    }
+}

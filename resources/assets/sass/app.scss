@@ -1,9 +1,28 @@
+@import 'variables';
+@import 'mixins';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap';
+@import 'fonts';
 
-// Fonts
-@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+html, body {
+    background-color: $body-bg;
+    width: 100%;
+    height: 100%;
+}
 
-// Variables
-@import "variables";
+body.login {
+    background-color: $brand-secondary;
+}
 
-// Bootstrap
-@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+body.igw {
+    #app {
+        position: relative;
+        top: 80px;
+        margin-left: 80px;
+        padding: $gutter;
+    }
+}
+
+@import 'components/login';
+@import 'components/buttons';
+@import 'components/header';
+@import 'components/sidebar';

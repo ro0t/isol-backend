@@ -1,0 +1,115 @@
+#login {
+    height: 100%;
+    width: 378px;
+    margin: 0 auto;
+
+    .logo {
+        width: 70px;
+        height: 51px;
+        margin: 0 auto;
+        background: url(/igw/logo.svg);
+        margin-top: 150px;
+        margin-bottom: 65px;
+    }
+
+    .login-text {
+        text-align: center;
+        padding-bottom: $gutter;
+
+        span.header {
+            font-size: 24px;
+            color: #000;
+            display: block;
+        }
+
+        span.sub {
+            letter-spacing: 2px;
+            color: #5F5F5F;
+            font-size: 11px;
+
+        }
+    }
+
+    .login-container {
+        padding: $gutter;
+        padding-bottom: $gutter / 2;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.14);
+    }
+
+    .made-by {
+        display: block;
+        outline: 0;
+        border: 0;
+        background: url(/igw/madeBy.svg);
+        width: 129px;
+        height: 23px;
+        margin: $gutter * 2 auto 0 auto;
+    }
+
+    .email,.password {
+        position: relative;
+
+        input {
+            width: 100%;
+            display: block;
+            border: 0;
+            border-bottom: 2px solid #e5e5e5;
+            outline: 0;
+            padding: 12px 15px 12px 35px;
+            font-family: GraphikMd, sans-serif;
+
+            &:-webkit-autofill {
+                -webkit-box-shadow: 0 0 0 30px white inset;
+            }
+
+            &:focus {
+                color: $brand-primary;
+                -webkit-text-fill-color: $brand-primary;
+            }
+        }
+
+    }
+
+    .email {
+        &:after {
+            content: '';
+            display: block;
+            pointer-events: none;
+            background: url(/igw/icons/at.svg) no-repeat;
+            position: absolute;
+            top: 14px;
+            left: 0;
+            width: 18px;
+            height: 18px;
+        }
+    }
+
+    .password {
+        margin-bottom: $gutter;
+
+        &:after {
+            content: '';
+            display: block;
+            pointer-events: none;
+            background: url(/igw/icons/lock.svg) no-repeat;
+            position: absolute;
+            top: 9px;
+            left: 0;
+            width: 17px;
+            height: 24px;
+        }
+    }
+
+    .input-errors {
+        padding-bottom: $gutter;
+
+        span {
+            display: block;
+            font-size: 12px;
+            color: $red;
+        }
+    }
+
+}

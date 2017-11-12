@@ -11,6 +11,20 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Authentication specific routes
+Auth::routes();
+Route::get('logout', function() {
+    Auth::logout();
+    return redirect('/');
+})->name('logout');
+
+// CMS Routes, don't forget to apply middleware in the constructor
+Route::get('/', 'PageController@index')->name('home');
+
+Route::get('/product/categories', 'ProductCategoryController@index')->name('categories');
+
+Route::get('product', 'ProductController@index')->name('products');
+
+Route::get('settings', 'SettingsController@index')->name('settings');
+
+Route::get('manufacturers', 'ManufacturerController@index')->name('manufacturers');

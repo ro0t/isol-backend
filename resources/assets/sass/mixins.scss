@@ -1,0 +1,18 @@
+@mixin clearfix {
+    &:after {
+        content: '';
+        display: table;
+        clear: both;
+    }
+}
+
+@mixin transition($trans: all .2s linear) {
+    -webkit-transition: $trans;
+    -moz-transition: $trans;
+    transition: $trans;
+}
+
+@mixin mask($image) {
+    -webkit-mask-image: url($image);
+    mask-image: url($image);
+}
