@@ -1,0 +1,17 @@
+#igw-table-actions {
+    margin-bottom: $gutter;
+
+    .igw-table-action {
+
+        .btn-create {
+            position: relative;
+
+            img {
+                position: relative;
+                left: -8px;
+            }
+        }
+
+    }
+
+}

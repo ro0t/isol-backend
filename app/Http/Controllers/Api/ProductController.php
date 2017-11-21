@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Api\ResponseController;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\ProductCategory;
 
 class ProductController extends ResponseController {
 
@@ -12,55 +13,21 @@ class ProductController extends ResponseController {
         parent::__construct($request);
     }
 
-    protected function categories() {
+    protected function categories(Request $request) {
+
+        $categories = null;
+
+        if( $request->has('show') && $request->get('show') == 'menu' ) {
+            $categories = ProductCategory::getMenuItems();
+        }
+
+        if( $request->has('show') && $request->get('show') == 'website' ) {
+            $categories = ProductCategory::getWebsiteItems();
+        }
 
         return $this->json([
-            'products' => [
-                [
-                    'id' => 1,
-                    'type' => 'category',
-                    'attributes' => [
-                        'name' => 'Handverkfæri'
-                    ]
-                ],
-                [
-                    'id' => 2,
-                    'type' => 'category',
-                    'attributes' => [
-                        'name' => 'Rafmagnsverkfæri'
-                    ]
-                ],
-                [
-                    'id' => 3,
-                    'type' => 'category',
-                    'attributes' => [
-                        'name' => 'Festingar'
-                    ]
-                ],
-                [
-                    'id' => 4,
-                    'type' => 'category',
-                    'attributes' => [
-                        'name' => 'Kítti og efnavörur'
-                    ]
-                ],
-                [
-                    'id' => 5,
-                    'type' => 'category',
-                    'attributes' => [
-                        'name' => 'Mælitæki'
-                    ]
-                ],
-                [
-                    'id' => 6,
-                    'type' => 'category',
-                    'attributes' => [
-                        'name' => 'Aukahlutir'
-                    ]
-                ]
-            ]
+            'categories' => $categories
         ]);
-
     }
 
     protected function list() {

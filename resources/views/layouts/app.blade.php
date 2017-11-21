@@ -11,6 +11,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Ísól - Igital web manager</title>
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    <script src="{{ mix('js/app.js') }}"></script>
+    @yield('head')
 </head>
 <body class="{{Auth::check()?'igw':'login'}}">
 
@@ -23,7 +25,21 @@
         @yield('content')
     </div>
 
-    <!-- Scripts -->
-    <script src="{{ mix('js/app.js') }}"></script>
+
+
+    @if(session('success') || session('error') )
+        <script>
+
+            document.addEventListener('DOMContentLoaded', function() {
+
+                @if(session('success'))
+                note.success('Success', '{{session("success")}}')
+                @else
+                note.error('Error', '{{session("error")}}')
+                @endif
+
+            });
+        </script>
+    @endif
 </body>
 </html>

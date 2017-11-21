@@ -36,7 +36,7 @@ aside#igw-sidebar{
             line-height: 80px;
             display: block;
             position: relative;
-            color: rgba(0,0,0,.4);
+            color: rgba(255,255,255,.4);
             text-decoration: none;
             font-size: 14px;
             font-family: GraphikMd, sans-serif;
@@ -89,6 +89,18 @@ aside#igw-sidebar{
                 width: 29px;
                 height: 29px;
                 @include mask('/igw/icons/menu/manufacturer.svg');
+            }
+
+            &.users:before {
+                width: 30px;
+                height: 28px;
+                @include mask('/igw/icons/menu/users.svg');
+            }
+
+            &.news:before {
+                width: 27px;
+                height: 24px;
+                @include mask('/igw/icons/menu/news.svg');
             }
 
             &:hover {

@@ -22,7 +22,19 @@ body.igw {
     }
 }
 
+strong {
+    font-family: GraphikMd, Graphik, sans-serif;
+}
+
 @import 'components/login';
 @import 'components/buttons';
 @import 'components/header';
 @import 'components/sidebar';
+@import 'components/table';
+@import 'components/table-actions';
+@import 'components/note';
+@import 'components/form';
+
+@import 'vendor/toggle-switch';
+@import 'vendor/trumbowyg';
+@import 'vendor/trumbowyg-override';

@@ -1,0 +1,27 @@
+.table {
+    > thead {
+        > tr {
+            td {
+                font-family: GraphikMd, Graphik, sans-serif;
+                color: #000;
+            }
+        }
+    }
+    > tbody {
+        > tr {
+            td {
+                vertical-align: middle;
+            }
+
+            td:last-child {
+                a {
+                    margin-left: 10px;
+                }
+
+                a.delete {
+                    color: $brand-danger;
+                }
+            }
+        }
+    }
+}

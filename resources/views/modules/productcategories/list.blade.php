@@ -3,25 +3,41 @@
 @section('content')
 <div class="container-fluid">
     <div class="row">
+        <div class="col-md-24" id="igw-table-actions">
+            {!! fcreate('categories.new', 'New product category') !!}
+        </div>
         <div class="col-md-24">
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <td>Page</td>
-                        <td>Url</td>
-                        <td></td>
-                        <td>Actions</td>
+                        <td>Category</td>
+                        <td align="center">Show in menu?</td>
+                        <td align="center">Show on website?</td>
+                        <td align="right">Actions</td>
                     </tr>
                 </thead>
                 <tbody>
-                    @for($i = 0; $i < 10; $i++)
+                    @foreach($data as $productCategory)
                     <tr>
-                        <td>Forsíða</td>
-                        <td>/</td>
-                        <td></td>
-                        <td>Edit</td>
+                        <td>{{$productCategory->name}}</td>
+                        <td align="center">
+                            <label class="switch">
+                                <input type="checkbox" data-url="{{route('categories.setMenuVisibility', $productCategory->id)}}" {!! isChecked($productCategory->show_menu) !!}>
+                                <span class="slider round"></span>
+                            </label>
+                        </td>
+                        <td align="center">
+                            <label class="switch">
+                                <input type="checkbox" data-url="{{route('categories.setWebsiteVisibility', $productCategory->id)}}" {!! isChecked($productCategory->show_website) !!}>
+                                <span class="slider round"></span>
+                            </label>
+                        </td>
+                        <td align="right">
+                            <a href="{{route('categories.edit', $productCategory->id)}}">Edit</a>
+                            <a href="{{route('categories.delete', $productCategory->id)}}" class="delete">Delete</a>
+                        </td>
                     </tr>
-                    @endfor
+                    @endforeach
                 </tbody>
             </table>
         </div>

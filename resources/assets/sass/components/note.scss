@@ -1,0 +1,152 @@
+.note--container {
+    z-index: 800;
+    position: fixed;
+    width: 350px;
+    max-width: 98%;
+    font-family: Graphik, sans-serif;
+    color: #999;
+    box-sizing: border-box;
+
+    &.topLeft {
+        top: $gutter;
+        left: $gutter;
+    }
+
+    &.topRight {
+        top: $gutter;
+        right: $gutter;
+    }
+
+    &.bottomRight {
+        bottom: $gutter;
+        right: $gutter;
+    }
+
+    &.bottomLeft {
+        bottom: $gutter;
+        left: $gutter;
+    }
+}
+
+.note {
+    position: relative;
+    cursor: pointer;
+    stroke: white;
+    color: white;
+    border: 1px solid rgba(0,0,0,0.03);
+    box-shadow: 0 2px 15px 0 rgba(0,0,0,.14);
+    opacity: 0;
+    padding: 14px;
+    animation: noteFadeOut cubic-bezier(0.23, -0.39, 0, 1.38) 0.75s;
+    width: 100%;
+    margin-bottom: 12px;
+    border-radius: 10px;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    &.shown {
+        animation: noteFadeIn cubic-bezier(0.23, -0.39, 0, 1.38) 1s;
+        opacity: 1;
+
+        .note--close, .note--title, .note--body {
+            display: block;
+        }
+    }
+
+    &:hover {
+        box-shadow: 0 3px 12px rgba(0,0,0,.26);
+    }
+
+    &.note--info {
+        background: #3498db;
+    }
+
+    &.note--success {
+        background: $brand-success;
+        color: #fff;
+    }
+
+    &.note--warning {
+        background: #FFDB70;
+        color: rgba(0,0,0, 0.7);
+        stroke: rgba(0,0,0, 0.7);
+    }
+
+    &.note--error {
+        background: #ec4e4e;
+    }
+
+    &.hasTitle .note--close {
+        padding-top: 5px;
+    }
+
+    .note--close {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        padding-right: 5px;
+        z-index: 9;
+        text-align: center;
+        align-self: center;
+        text-decoration: none;
+        color: rgba(0,0,0,.4);
+        stroke: rgba(0,0,0,.4);
+        cursor: pointer;
+
+        &:hover {
+            color: rgba(0,0,0,.5);
+            stroke: rgba(0,0,0,.5);
+        }
+
+        svg {
+            cursor: pointer;
+            width: 15px;
+            height: inherit;
+            display: block;
+
+            path {
+                stroke: inherit;
+                stroke-width: 2;
+            }
+        }
+    }
+
+    .note--title {
+        font-family: GraphikMd, Graphik, sans-serif;
+        margin: 0;
+        padding: 0;
+        margin-bottom: 8px;
+        font-size: 20px;
+        line-height: 28px;
+        font-weight: 600;
+        color: inherit;
+        opacity: 0.9;
+
+        svg {
+            margin-right: 4px;
+            line-height: 20px;
+            width: 17px;
+            height: 17px;
+        }
+    }
+
+    .note--body {
+        font-size: 16px;
+        font-weight: 400;
+        color: inherit;
+        margin: 0;
+    }
+
+}
+
+@keyframes noteFadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes noteFadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}

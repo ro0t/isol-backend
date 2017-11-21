@@ -17,6 +17,7 @@ class Controller extends BaseController {
 
     }
 
+
     public function breadcrumbs() {
 
         $args = func_get_args();
@@ -28,4 +29,21 @@ class Controller extends BaseController {
         View::share('breadcrumbs', $args[0]);
 
     }
+
+    public function success($message, $code = 200) {
+
+        return response()->json([
+            'message' => $message
+        ], $code);
+
+    }
+
+    public function error($error, $code = 400) {
+
+        return response()->json([
+            'message' => $error
+        ], $code);
+
+    }
+
 }

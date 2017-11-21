@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\ResponseController;
 use Illuminate\Http\Request;
+use App\Models\Manufacturer;
 
 class ManufacturerController extends ResponseController {
 
@@ -13,41 +14,17 @@ class ManufacturerController extends ResponseController {
 
     protected function list() {
 
+        $manufacturers = Manufacturer::getActive();
+
+        $manufacturers = $manufacturers->map(function($item, $key) {
+
+            $item->image = asset($item->image);
+            return $item;
+
+        });
+
         return $this->json([
-            'data' => [
-                [
-                    'id' => 1,
-                    'type' => 'manufacturer',
-                    'attributes' => [
-                        'slug' => 'festool',
-                        'name' => 'Festool'
-                    ]
-                ],
-                [
-                    'id' => 2,
-                    'type' => 'manufacturer',
-                    'attributes' => [
-                        'slug' => 'facom',
-                        'name' => 'Facom'
-                    ]
-                ],
-                [
-                    'id' => 3,
-                    'type' => 'manufacturer',
-                    'attributes' => [
-                        'slug' => 'dl-chemicals',
-                        'name' => 'DL Chemicals'
-                    ]
-                ],
-                [
-                    'id' => 4,
-                    'type' => 'manufacturer',
-                    'attributes' => [
-                        'slug' => 'spit',
-                        'name' => 'Spit'
-                    ]
-                ]
-            ]
+            'manufacturers' => $manufacturers
         ]);
 
     }

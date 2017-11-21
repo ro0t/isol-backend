@@ -3,25 +3,28 @@
 @section('content')
 <div class="container-fluid">
     <div class="row">
+        <div class="col-md-24" id="igw-table-actions">
+            {!! fcreate('products.new', 'New product') !!}
+        </div>
         <div class="col-md-24">
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <td>Page</td>
+                        <td>Product</td>
                         <td>Url</td>
-                        <td></td>
+                        <td>Image</td>
+                        <td>Show on website?</td>
                         <td>Actions</td>
                     </tr>
                 </thead>
                 <tbody>
-                    @for($i = 0; $i < 10; $i++)
                     <tr>
-                        <td>Forsíða</td>
-                        <td>/</td>
                         <td></td>
-                        <td>Edit</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                     </tr>
-                    @endfor
                 </tbody>
             </table>
         </div>

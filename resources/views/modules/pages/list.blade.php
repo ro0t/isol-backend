@@ -9,19 +9,25 @@
                     <tr>
                         <td>Page</td>
                         <td>Url</td>
-                        <td></td>
-                        <td>Actions</td>
+                        <td align="center">SEO</td>
+                        <td align="right">Actions</td>
                     </tr>
                 </thead>
                 <tbody>
-                    @for($i = 0; $i < 10; $i++)
+                    @foreach($data as $page)
                     <tr>
-                        <td>Forsíða</td>
-                        <td>/</td>
-                        <td></td>
-                        <td>Edit</td>
+                        <td>{{$page->name}}</td>
+                        <td><a href="javascript:;">{{$page->url}}</a></td>
+                        <td align="center"><a href="{{route('page.seo', $page->id)}}">Modify</a></td>
+                        <td align="right">
+                            @if($page->editable)
+                            <a href="{{route('page.edit', $page->id)}}">Edit</a>
+                            @else
+                            <span style="text-decoration: line-through; opacity: .6">Edit</span>
+                            @endif
+                        </td>
                     </tr>
-                    @endfor
+                    @endforeach
                 </tbody>
             </table>
         </div>

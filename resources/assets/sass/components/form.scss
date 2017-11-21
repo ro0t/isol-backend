@@ -1,0 +1,116 @@
+form {
+
+    .input {
+        margin-bottom: $gutter;
+
+        label {
+            display: block;
+            font-family: GraphikMd, Graphik, sans-serif;
+            color: #000;
+            font-size: 16px;
+        }
+
+        span.input__description {
+            display: block;
+            font-size: 12px;
+            max-width: 350px;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        input[type="text"],input[type="email"],input[type="password"], textarea {
+            border-radius: 3px;
+            border: 1px solid #D9D9D9;
+            padding: 12px 15px;
+            min-width: 350px;
+            max-width: 80%;
+
+            &:focus {
+                border-color: $brand-third;
+                outline: 0;
+            }
+        }
+
+        &.input--filled {
+
+            input[type="text"],input[type="email"],input[type="password"] {
+                border-color: $brand-success;
+            }
+
+        }
+
+        &.input--error {
+
+            input[type="text"],input[type="email"],input[type="password"] {
+                border-color: $brand-danger;
+            }
+
+        }
+
+        input[type="text"]:focus,input[type="email"]:focus,input[type="password"]:focus {
+            border-color: $brand-third;
+            outline: 0;
+        }
+
+    }
+
+    .input--image {
+
+        .preview-image {
+            img {
+                border: 1px solid #d9d9d9;
+                padding: 10px;
+                margin: $gutter / 2 0;
+                max-width: 200px;
+            }
+        }
+
+    }
+
+    label.select--label {
+        display: block;
+        font-family: GraphikMd, Graphik, sans-serif;
+        color: #000;
+        font-size: 16px;
+    }
+
+    .select {
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+        border-radius: 3px;
+        border: 1px solid #D9D9D9;
+        padding: 12px 15px;
+        width: 350px;
+        margin-bottom: $gutter;
+        position: relative;
+
+        &:after {
+            content: '';
+            position: absolute;
+            top: 19px;
+            right: 15px;
+            background: url(/igw/icons/angle-arrow-down.svg);
+            background-size: 100%;
+            width: 18px;
+            height: 18px;
+        }
+
+        select {
+            padding: 5px 8px;
+            width: 130%;
+            border: none;
+            box-shadow: none;
+            background-color: transparent;
+            background-image: none;
+            -webkit-appearance: none;
+               -moz-appearance: none;
+                    appearance: none;
+        }
+
+        select:focus {
+            outline: none;
+        }
+    }
+
+}

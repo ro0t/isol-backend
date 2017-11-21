@@ -18,13 +18,81 @@ Route::get('logout', function() {
     return redirect('/');
 })->name('logout');
 
-// CMS Routes, don't forget to apply middleware in the constructor
 Route::get('/', 'PageController@index')->name('home');
 
-Route::get('/product/categories', 'ProductCategoryController@index')->name('categories');
+Route::group(['prefix' => 'pages'], function() {
 
-Route::get('product', 'ProductController@index')->name('products');
+    Route::get('edit/{id}', 'PageController@edit')->name('page.edit');
+    Route::get('seo/{id}', 'PageController@seo')->name('page.seo');
 
-Route::get('settings', 'SettingsController@index')->name('settings');
+    Route::post('edit/{id}', 'PageController@change');
+    Route::post('seo/{id}', 'PageController@changeSeo');
 
-Route::get('manufacturers', 'ManufacturerController@index')->name('manufacturers');
+});
+
+Route::group(['prefix' => 'news'], function() {
+
+    Route::get('/', 'NewsController@index')->name('news');
+    Route::get('new', 'NewsController@create')->name('news.new');
+
+});
+
+Route::group(['prefix' => 'users'], function() {
+
+    Route::get('/', 'UserController@index')->name('users');
+    Route::get('new', 'UserController@create')->name('users.new');
+    Route::get('edit/{id}', 'UserController@edit')->name('users.edit');
+    Route::get('delete/{id}', 'UserController@delete')->name('users.delete');
+
+    Route::post('new', 'UserController@createNew');
+    Route::post('edit/{id}', 'UserController@change');
+
+});
+
+Route::group([ 'prefix' => 'categories' ], function() {
+
+    Route::get('/', 'ProductCategoryController@index')->name('categories');
+    Route::get('edit/{id}', 'ProductCategoryController@edit')->name('categories.edit');
+    Route::get('delete/{id}', 'ProductCategoryController@delete')->name('categories.delete');
+    Route::get('new', 'ProductCategoryController@create')->name('categories.new');
+
+    Route::post('new', 'ProductCategoryController@createNew');
+    Route::post('edit/{id}', 'ProductCategoryController@change');
+    Route::post('showWebsite/{id}', 'ProductCategoryController@setWebsiteVisibility')->name('categories.setWebsiteVisibility');
+    Route::post('showMenu/{id}', 'ProductCategoryController@setMenuVisibility')->name('categories.setMenuVisibility');
+
+});
+
+Route::group(['prefix' => 'product'], function() {
+
+    Route::get('/', 'ProductController@index')->name('products');
+    Route::get('new', 'ProductController@create')->name('products.new');
+    Route::get('edit/{id}', 'ProductController@edit')->name('products.edit');
+    Route::get('delete/{id}', 'ProductController@delete')->name('products.delete');
+    Route::get('autosearch/navision', 'ProductController@navision')->name('products.autosearch.navision');
+
+    Route::post('new', 'ProductController@createNew');
+    Route::post('edit/{id}', 'ProductController@change');
+    Route::post('showWebsite/{id}', 'ProductController@setWebsiteVisibility')->name('products.setWebsiteVisibility');
+});
+
+Route::group(['prefix' => 'settings'], function() {
+
+    Route::get('/', 'SettingsController@index')->name('settings');
+    Route::post('/', 'SettingsController@save');
+
+});
+
+Route::group(['prefix' => 'manufacturers'], function() {
+
+    Route::get('/', 'ManufacturerController@index')->name('manufacturers');
+    Route::get('new', 'ManufacturerController@create')->name('manufacturers.new');
+    Route::get('edit/{id}', 'ManufacturerController@edit')->name('manufacturers.edit');
+
+    Route::post('new', 'ManufacturerController@createNew');
+    Route::post('edit/{id}', 'ManufacturerController@change');
+    Route::post('setActive/{id}', 'ManufacturerController@setActive')->name('manufacturers.setActive');
+
+});
+
+//Route::get('manufacturers', 'ManufacturerController@index')->name('manufacturers');

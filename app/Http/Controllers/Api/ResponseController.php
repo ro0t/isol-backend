@@ -14,9 +14,9 @@ class ResponseController extends BaseController {
 
     }
 
-    public function json( $data ) {
+    public function json( $data, $status = 200 ) {
 
-        $response = new Response( json_encode($data), 200 );
+        $response = new Response( json_encode($data), $status );
 
         $response->header('Content-Type', 'application/json');
         $response->header('Access-Control-Allow-Origin', '*');
