@@ -4,7 +4,7 @@
 <div class="container-fluid">
     <div class="row">
         {!! ferrors() !!}
-        <div class="col-md-24">
+        <div class="col-md-4">
             <form method="post" autocomplete="off">
                 {{ csrf_field() }}
 
@@ -19,8 +19,8 @@
                 <label class="select--label" for="level">User type</label>
                 <div class="select">
                     <select id="level" name="level">
-                        <option value="0">Administrator</option>
-                        <option value="1">Super administrator</option>
+                        <option value="0" {!! fselectvalue(0, $data, 'super_admin') !!}>Administrator</option>
+                        <option value="1" {!! fselectvalue(1, $data, 'super_admin') !!}>Super administrator</option>
                     </select>
                 </div>
 

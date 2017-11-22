@@ -3,7 +3,7 @@
 @section('content')
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-24">
+        <div class="col-md-4">
             <form method="post">
                 {{ csrf_field() }}
 

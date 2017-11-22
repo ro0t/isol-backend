@@ -76,12 +76,13 @@ if( !function_exists('finput') ) {
 
 if( !function_exists('ftextarea') ) {
 
-    function ftextarea( $name, $label, $value, $options = '' ) {
+    function ftextarea( $name, $label, $value, $options = '', $required = false ) {
 
         return view('components.ftextarea')
             ->with('name', $name)
             ->with('label', $label)
             ->with('value', $value)
+            ->with('required', $required)
             ->with('options', $options);
 
     }
@@ -102,11 +103,11 @@ if( !function_exists('fimage') ) {
 
 }
 
-if( !function_exists('fcsv') ) {
+if( !function_exists('ffile') ) {
 
-    function fcsv( $name, $label, $value, $accept = '.csv' ) {
+    function ffile( $name, $label, $value, $accept = '.csv' ) {
 
-        return view('components.fcsv')
+        return view('components.ffile')
             ->with('name', $name)
             ->with('label', $label)
             ->with('value', $value)

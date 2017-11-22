@@ -70,10 +70,13 @@ Route::group(['prefix' => 'product'], function() {
     Route::get('edit/{id}', 'ProductController@edit')->name('products.edit');
     Route::get('delete/{id}', 'ProductController@delete')->name('products.delete');
     Route::get('autosearch/navision', 'ProductController@navision')->name('products.autosearch.navision');
+    Route::get('deleteImage/{id}', 'ProductController@deleteImage');
 
     Route::post('new', 'ProductController@createNew');
     Route::post('edit/{id}', 'ProductController@change');
     Route::post('showWebsite/{id}', 'ProductController@setWebsiteVisibility')->name('products.setWebsiteVisibility');
+    Route::post('images/{id}', 'ProductController@addImages')->name('products.images');
+    Route::post('setMainImage/{id}', 'ProductController@setMainImage');
 });
 
 Route::group(['prefix' => 'settings'], function() {

@@ -16,6 +16,12 @@ class Manufacturer extends Model {
 
     }
 
+    protected function getActiveWithIds() {
+
+        return self::select('id', 'name')->where('active', 1)->get();
+
+    }
+
     protected function getList() {
 
         return self::orderBy('id', 'ASC')->limit(100)->get();

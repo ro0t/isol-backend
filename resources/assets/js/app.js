@@ -5,16 +5,19 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
-require('axios');
-require('jquery/dist/jquery.min');
+import './bootstrap';
+import 'axios';
+import 'jquery/dist/jquery.min';
 
-let note = require('Note.js')
-let switches = require('./components/switch');
-let styledInput = require('./components/input');
-let textarea = require('./components/textarea');
-let links = require('./components/links');
-let datalists = require('./components/datalist');
+import swal from 'sweetalert2';
+import note from 'Note.js';
+import switches from './components/switch';
+import styledInput from './components/input';
+import textarea from './components/textarea';
+import links from './components/links'
+import datalists from './components/datalist';
+import techInfo from './components/technical-information';
+import productImages from './components/product-images';
 
 class IGW {
 
@@ -27,6 +30,10 @@ class IGW {
         textarea.activate();
         links.activate();
         datalists.activate();
+        techInfo.activate();
+
+        let pi = new productImages();
+        pi.activate();
 
     }
 

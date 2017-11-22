@@ -2,9 +2,14 @@
 
 namespace App\Models;
 
-class Product {
+use Illuminate\Database\Eloquent\Model;
 
-    public function related() {
+class Product extends Model {
+
+    protected $table = 'product';
+    protected $guarded = ['id'];
+
+    public static function related() {
 
         $products = [
             [
@@ -91,7 +96,7 @@ class Product {
 
     }
 
-    public function all( $id = null ) {
+    public static function all( $id = null ) {
 
         $products = [
             [

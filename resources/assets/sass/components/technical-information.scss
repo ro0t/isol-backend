@@ -1,0 +1,73 @@
+.technical-description {
+    margin-bottom: $gutter;
+
+    .tech-description-lines {
+
+        > div {
+            @include clearfix;
+            position: relative;
+
+            input {
+                border: 1px solid #e5e5e5;
+                box-sizing: border-box;
+                padding: 12px 20px;
+                outline: 0;
+
+                &:focus {
+                    border-color: $brand-primary;
+                }
+            }
+
+            .left {
+                float: left;
+                width: 30%;
+                font-weight: bold;
+                background: #fbfbfb;
+            }
+
+            .right {
+                float: right;
+                width: 70%;
+                box-sizing: border-box;
+                padding-right: 50px;
+            }
+
+            .remove {
+                position: absolute;
+                top: 12px;
+                right: 8px;
+                background: url(/delete.svg) no-repeat;
+                background-size: cover;
+                width: 22px;
+                height: 22px;
+                cursor: pointer;
+            }
+        }
+
+    }
+
+    .add-line {
+        margin-top: $gutter / 2;
+        width: 36px;
+        height: 36px;
+        cursor: pointer;
+
+        svg {
+            width: 100%;
+            height: 100%;
+            background-size: 100%;
+
+            .add-circle-green {
+                fill: $brand-success;
+                @include transition;
+            }
+
+            &:hover {
+                .add-circle-green {
+                    fill: darken($brand-success, 6%);
+                }
+            }
+        }
+    }
+
+}

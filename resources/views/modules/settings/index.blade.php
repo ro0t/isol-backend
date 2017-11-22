@@ -7,11 +7,11 @@
 @section('content')
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-24">
+        <div class="col-md-4">
             <form method="post" enctype="multipart/form-data">
                 {{ csrf_field() }}
 
-                {!! fcsv('plist', 'Product list (CSV)', '') !!}
+                {!! ffile('plist', 'Product list (CSV)', '') !!}
                 {!! ftextarea('opening-hours', 'Opening hours', $openingHours->content, 'strong|underline|em|link') !!}
                 {!! ftextarea('footer', 'Footer', $footer->content, 'strong|underline|em|link') !!}
                 {!! ftextarea('emergency-number', 'Emergency number', $emergencyNumber->content, 'strong|underline|em|link') !!}

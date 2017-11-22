@@ -1,4 +1,5 @@
 let classie = require('desandro-classie');
+let swal = require('sweetalert2');
 
 class Links {
 
@@ -19,16 +20,33 @@ class Links {
 
     attachDeleteConfirmationEvent( link ) {
 
+        link.addEventListener('contextmenu', (e) => { e.preventDefault(); e.target.click(); });
+
         link.addEventListener('click', (e) => {
 
-            let check = confirm('Are you sure you want to delete this record?');
+            e.preventDefault();
+            let currentLink = e.target;
 
-            if(!check) {
-                e.preventDefault();
-                return;
-            }
+            swal({
+              title: 'Are you sure',
+              text: "You want to delete this record?",
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#38465A',
+              cancelButtonColor: '#AC5252',
+              confirmButtonText: 'Delete!'
+            }).then((result) => {
 
-        })
+                if (!result.value) {
+                    e.preventDefault();
+                    return;
+                }
+
+                window.location.href = currentLink.getAttribute('href');
+
+            });
+
+        });
 
     }
 

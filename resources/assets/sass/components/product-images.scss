@@ -1,0 +1,129 @@
+.product-images {
+    margin-bottom: $gutter;
+
+    .images {
+        @include clearfix;
+
+        > div {
+            width: auto;
+            height: 130px;
+            float: left;
+            margin-right: $gutter / 2.5;
+            margin-bottom: $gutter / 2.5;
+            text-align: center;
+            border-radius: 6px;
+            border: 2px solid transparent;
+            overflow: hidden;
+            cursor: pointer;
+
+            img {
+                width: auto;
+                max-height: 100%;
+                opacity: .5;
+                @include transition(all .2s ease-in-out);
+                pointer-events: none;
+            }
+
+            &:hover {
+                img { opacity: .7; }
+            }
+
+            &.active {
+                border-color: $brand-success;
+
+                img {
+                    opacity: 1;
+                }
+            }
+        }
+
+    }
+
+    .add-image {
+        margin-top: $gutter / 2;
+        width: 36px;
+        height: 36px;
+        cursor: pointer;
+
+        svg {
+            width: 100%;
+            height: 100%;
+            background-size: 100%;
+
+            .add-circle-green {
+                fill: $brand-success;
+                @include transition;
+            }
+
+            &:hover {
+                .add-circle-green {
+                    fill: darken($brand-success, 6%);
+                }
+            }
+        }
+    }
+
+}
+
+.product-images-upload {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.32);
+    z-index: 5000;
+    animation: fadeIn .2s ease-in;
+    display: none;
+
+    .upload-status {
+        background: #fff;
+        width: 420px;
+        height: 200px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -210px;
+        margin-top: -100px;
+        border-radius: 10px;
+        box-shadow: 0 3px 10px rgba(0,0,0,.15);
+        box-sizing: border-box;
+        padding: $gutter * 1.5 $gutter;
+        text-align: center;
+        animation: fadeUploaderIn .5s ease-in-out;
+
+        h3 {
+            font-size: 22px;
+            text-align: center;
+            margin-top: 0;
+            color: $brand-secondary;
+        }
+
+        img {
+            margin-top: $gutter * 1.5;
+        }
+    }
+
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeUploaderIn {
+    0% {
+        opacity: 0;
+        top: 70%;
+    }
+
+    100% {
+        opacity: 1;
+        top: 50%;
+    }
+}

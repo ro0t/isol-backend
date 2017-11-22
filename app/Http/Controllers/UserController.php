@@ -71,9 +71,10 @@ class UserController extends Controller {
 
     }
 
-    public function validator($request, $isEditing = false) {
+    public function validator($request, $isEditing = false, $email = false) {
 
         $passwordValidation = 'required|string|min:6';
+        $emailValidation = 'required|string|email|max:255|unique:users';
 
         if( $isEditing ) {
 
@@ -83,11 +84,15 @@ class UserController extends Controller {
 
             }
 
+            if( $email ) {
+                $emailValidation = 'required|string|email|max:255';
+            }
+
         }
 
         return $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => $emailValidation,
             'password' => $passwordValidation,
         ]);
 
@@ -114,16 +119,22 @@ class UserController extends Controller {
 
     public function change(Request $request, $id) {
 
-        $validator = $this->validator($request, true);
-
         $user = User::find($id);
 
         if(!empty($request->get('password'))) {
             $user->password = bcrypt($request->get('password'));
         }
 
+        // Check if the mail has changed.
+        $newMail = $request->get('email');
+        if( $newMail != $user->email ) {
+            $user->email = $request->get('email');
+        }
+
         $user->name = $request->get('name');
-        $user->email = $request->get('email');
+        $user->super_admin = $request->get('level');
+
+        $validator = $this->validator($request, true, ($newMail == $user->email));
 
         if($user->save()) {
             return redirect()->route('users')->with('success', $user->name . ' was successfully edited.');

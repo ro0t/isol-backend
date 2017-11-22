@@ -10,7 +10,7 @@ class StyledInput {
 
             let store = { input: input, child: input.querySelector('.input__field') }
 
-            if( classie.has(store.input, 'input--image') || classie.has(store.input, 'textarea')) {
+            if( store.child == null || classie.has(store.input, 'input--image') || classie.has(store.input, 'textarea')) {
                 return;
             } else {
                 this.checkValue(store);

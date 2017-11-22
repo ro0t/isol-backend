@@ -2,6 +2,8 @@
     margin-bottom: $gutter;
 
     .igw-table-action {
+        display: inline-block;
+        margin-right: $gutter / 2;
 
         .btn-create {
             position: relative;
@@ -9,6 +11,17 @@
             img {
                 position: relative;
                 left: -8px;
+            }
+        }
+
+        .btn-toggle {
+            border: 1px solid $brand-secondary;
+            color: $brand-secondary;
+            @include transition(all .2s ease-in-out);
+
+            &:hover {
+                background: $brand-secondary;
+                color: #fff;
             }
         }
 
