@@ -66,6 +66,17 @@ class ManufacturerController extends Controller {
 
         if($mf != null) {
 
+            if( $request->hasFile('image') ) {
+
+                $ext = $request->image->extension();
+                $ext = ($ext == 'jpeg') ? 'jpg' : $ext;
+                $fileName = md5($request->image->path() . time() . mt_rand()) . '.' . $ext;
+
+                $request->image->storeAs('mf-images', $fileName);
+                $mf->image = '/mf-images/' . $fileName;
+
+            }
+
             $mf->name = $request->get('name');
             $mf->slug = str_slug($request->get('name'));
             $mf->website = $request->get('website');
@@ -89,11 +100,24 @@ class ManufacturerController extends Controller {
             return redirect()->route('manufacturers.new')->with('error', 'You have to enter a website for this manufacturer.');
         }
 
+        $image = null;
+
+        if( $request->hasFile('image') ) {
+
+            $ext = $request->image->extension();
+            $ext = ($ext == 'jpeg') ? 'jpg' : $ext;
+            $fileName = md5($request->image->path() . time() . mt_rand()) . '.' . $ext;
+
+            $request->image->storeAs('mf-images', $fileName);
+            $image = '/mf-images/' . $fileName;
+
+        }
+
         $mf = Manufacturer::create([
             'name' => $request->get('name'),
             'slug' => str_slug($request->get('name')),
             'website' => $request->get('website'),
-            'image' => ''
+            'image' => $image
         ]);
 
         if( $mf ) {

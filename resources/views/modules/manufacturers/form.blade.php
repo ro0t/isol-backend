@@ -9,7 +9,7 @@
 
                 {!! finput('name', 'Name', fvalue($data, 'name')) !!}
                 {!! finput('website', 'Website', fvalue($data, 'website'),'Include http:// or https://') !!}
-                {!! fimage('image', 'Logo', fvalue($data, 'image')) !!}
+                {!! fimage('image', 'Logo', fvalue($data, 'image'), '.svg,image/png,image/jpg') !!}
 
                 <button type="submit" class="btn btn-success">Save changes</button>
                 <a href="{{route('manufacturers')}}" class="btn btn-danger">Cancel</a>

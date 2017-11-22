@@ -11,20 +11,23 @@
                 <thead>
                     <tr>
                         <td>Title</td>
-                        <td>Url</td>
-                        <td>Image</td>
-                        <td>Show on website?</td>
+                        <td>Created</td>
+                        <td>Last updated</td>
                         <td align="right">Actions</td>
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach($news as $article)
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td align="right">Edit</td>
+                        <td>{{$article->title}}</td>
+                        <td>{{date('d. m. Y', strtotime($article->created_at))}}</td>
+                        <td>{{date('d. m. Y', strtotime($article->updated_at))}}</td>
+                        <td align="right">
+                            <a href="{{route('news.edit', $article->id)}}">Edit</a>
+                            <a href="{{route('news.delete', $article->id)}}" class="delete">Delete</a>
+                        </td>
                     </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

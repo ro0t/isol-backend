@@ -1,6 +1,4 @@
 *
 !product-data/
-files/
-product-images/
 !public/
 !.gitignore
