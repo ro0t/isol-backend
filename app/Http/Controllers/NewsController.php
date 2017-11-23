@@ -120,5 +120,20 @@ class NewsController extends Controller {
 
     }
 
+    public function delete() {
+
+        $post = News::where('active', 1)->first();
+
+        if(!$post) return redirect()->route('news')->with('error', 'Could not find article with id ' . $id);
+
+        $post->active = 0;
+
+        if($post->save()) {
+            return redirect()->route('news')->with('success', 'Article has been deleted');
+        }
+
+        return redirect()->route('news')->with('error', 'Could not delete article, please try again.');
+
+    }
 
 }

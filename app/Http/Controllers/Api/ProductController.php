@@ -30,22 +30,20 @@ class ProductController extends ResponseController {
         ]);
     }
 
-    protected function list() {
+    protected function list(Request $request) {
 
-        $prod = new Product();
+        $products = Product::products($request);
 
         return $this->json([
-            'products' => $prod->all()
+            'products' => $products
         ]);
 
     }
 
-    public function detail($id) {
-
-        $prod = new Product();
+    public function detail(Request $request, $id) {
 
         return $this->json([
-            'product' => $prod->all($id)
+            'product' => Product::single($request, $id)
         ]);
 
     }

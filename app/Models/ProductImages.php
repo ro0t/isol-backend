@@ -8,9 +8,16 @@ class ProductImages extends Model {
     protected $primaryKey = 'id';
     protected $guarded = [];
 
-    protected function getImagesFor( $id ) {
+    protected function getImagesFor( $id, $reversed = false ) {
 
-        return self::select('id', 'main_image', 'product_id', 'image')->where('product_id', $id)->where('active', 1)->get();
+        $query = self::select('id', 'main_image', 'product_id', 'image')->where('product_id', $id)->where('active', 1);
+
+        // We do this so the website can be faster finding the
+        if( $reversed ) {
+            $query->orderBy('main_image', 'DESC');
+        }
+
+        return $query->get();
 
     }
 
