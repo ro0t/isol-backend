@@ -103,7 +103,8 @@ class ProductCategoryController extends Controller {
 
         $pc = ProductCategory::create([
             'name' => $request->get('name'),
-            'slug' => str_slug($request->get('name'))
+            'slug' => str_slug($request->get('name')),
+            'show_menu' => 0,
         ]);
 
         if( $pc ) {
