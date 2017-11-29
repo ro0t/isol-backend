@@ -34492,7 +34492,8 @@ var Textarea = function () {
 
                 return {
                     btns: string.split('|'),
-                    autogrow: true
+                    autogrow: true,
+                    removeformatPasted: true
                 };
             }
         }
@@ -34502,7 +34503,8 @@ var Textarea = function () {
 
             options = options ? options : {
                 //btns: ['strong','italic','underline','insertImage'],
-                autogrow: true
+                autogrow: true,
+                removeformatPasted: true
             };
 
             $(textarea).trumbowyg(options);

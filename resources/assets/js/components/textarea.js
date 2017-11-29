@@ -18,7 +18,8 @@ class Textarea {
 
             return {
                 btns: string.split('|'),
-                autogrow: true
+                autogrow: true,
+                removeformatPasted: true
             }
 
         }
@@ -29,7 +30,8 @@ class Textarea {
 
         options = options ? options : {
             //btns: ['strong','italic','underline','insertImage'],
-            autogrow: true
+            autogrow: true,
+            removeformatPasted: true
         };
 
         $(textarea).trumbowyg(options);
