@@ -7,6 +7,8 @@ use App\Models\ProductCategory;
 
 class ProductCategoryController extends Controller {
 
+    private $model;
+
     /**
      * Create a new controller instance.
      *
@@ -28,7 +30,7 @@ class ProductCategoryController extends Controller {
 
         $this->breadcrumbs('Products', 'Categories');
 
-        $data = ProductCategory::getList();
+        $data = ProductCategory::getParentsAndChildren();
 
         return view('modules.productcategories.list')
             ->with('data', $data);
@@ -37,8 +39,10 @@ class ProductCategoryController extends Controller {
     public function create() {
 
         $this->breadcrumbs('Products', 'Categories', 'Create');
+        $parents = ProductCategory::getParents();
 
         return view('modules.productcategories.form')
+            ->with('parents', $parents)
             ->with('data', null);
 
     }
@@ -50,8 +54,10 @@ class ProductCategoryController extends Controller {
         if($pc != null) {
 
             $this->breadcrumbs('Products', 'Categories', $pc->name);
+            $parents = ProductCategory::getParents();
 
             return view('modules.productcategories.form')
+                ->with('parents', $parents)
                 ->with('data', $pc);
 
         }
@@ -85,6 +91,7 @@ class ProductCategoryController extends Controller {
 
             $pc->name = $request->get('name');
             $pc->slug = str_slug($request->get('name'));
+            $pc->parent = $request->get('parent');
             $pc->save();
 
             return redirect()->route('categories')->with('success', 'Product category ' . $pc->name . ' has been saved!');
@@ -104,6 +111,7 @@ class ProductCategoryController extends Controller {
         $pc = ProductCategory::create([
             'name' => $request->get('name'),
             'slug' => str_slug($request->get('name')),
+            'parent' => $request->get('parent'),
             'show_menu' => 0,
         ]);
 

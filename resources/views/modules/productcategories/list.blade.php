@@ -4,7 +4,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-24" id="igw-table-actions">
-            {!! fcreate('categories.new', 'New product category') !!}
+            {!! fcreate('categories.new', 'New category') !!}
         </div>
         <div class="col-md-24">
             <table class="table table-hover">
@@ -37,6 +37,18 @@
                             <a href="{{route('categories.delete', $productCategory->id)}}" class="delete">Delete</a>
                         </td>
                     </tr>
+
+                    <!-- Loop through for children -->
+                    @foreach($productCategory->children as $childCategory)
+                    <tr>
+                        <td colspan="3" class="inset-child">{{$productCategory->name}} <span>&raquo;</span> {{$childCategory->name}}</td>
+                        <td align="right">
+                            <a href="{{route('categories.edit', $childCategory->id)}}">Edit</a>
+                            <a href="{{route('categories.delete', $childCategory->id)}}" class="delete">Delete</a>
+                        </td>
+                    </tr>
+                    @endforeach
+
                     @endforeach
                 </tbody>
             </table>

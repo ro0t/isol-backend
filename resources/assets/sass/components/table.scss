@@ -11,6 +11,14 @@
         > tr {
             td {
                 vertical-align: middle;
+
+                &.inset-child {
+                    padding: $gutter / 1.6 $gutter;
+
+                    span {
+                        color: $brand-primary;
+                    }
+                }
             }
 
             td:last-child {

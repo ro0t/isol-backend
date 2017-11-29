@@ -8747,6 +8747,14 @@ aside#igw-sidebar:hover a span {
   vertical-align: middle;
 }
 
+.table > tbody > tr td.inset-child {
+  padding: 15.625px 25px;
+}
+
+.table > tbody > tr td.inset-child span {
+  color: #497DC7;
+}
+
 .table > tbody > tr td:last-child a {
   margin-left: 10px;
 }

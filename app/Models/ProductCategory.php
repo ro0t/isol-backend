@@ -10,6 +10,27 @@ class ProductCategory extends Model {
     // Allow us to set the ID to slug
     public $incrementing = false;
 
+    protected function getParents() {
+
+        return self::where('active', 1)->whereNull('parent')->orderBy('id', 'ASC')->get();
+
+    }
+
+    protected function getParentsAndChildren() {
+
+        $parents = self::getParents();
+
+        foreach($parents as $parent) {
+
+            // Find and return all the children of each parent
+            $parent->children = self::where('parent', $parent->id)->where('active', 1)->orderBy('name', 'ASC')->get();
+
+        }
+
+        return $parents;
+
+    }
+
     protected function getWebsiteItems() {
 
         return self::select('slug as id', 'name')->where('active', 1)->where('show_website', 1)->get();
