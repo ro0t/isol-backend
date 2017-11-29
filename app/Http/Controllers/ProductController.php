@@ -28,7 +28,7 @@ class ProductController extends Controller {
         parent::__construct();
         $this->middleware('auth');
 
-        $this->categories = ProductCategory::getList();
+        $this->categories = ProductCategory::getParentsAndChildren();
         $this->manufacturers = Manufacturer::getActiveWithIds();
 
     }

@@ -35,7 +35,11 @@
                             <select id="product_category_id" name="product_category_id" required>
                                 <option value="">Choose category</option>
                                 @foreach($categories as $pc)
-                                <option value="{{$pc->id}}" {!! fselectvalue($pc->id, $data, 'product_category_id') !!}>{{$pc->name}}</option>
+                                    <optgroup label="{{$pc->name}}">
+                                        @foreach($pc->children as $childCategory)
+                                        <option value="{{$childCategory->id}}" {!! fselectvalue($pc->id, $data, 'product_category_id') !!}>{{$childCategory->name}}</option>
+                                        @endforeach
+                                    </optgroup>
                                 @endforeach
                             </select>
                         </div>
