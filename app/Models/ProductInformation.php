@@ -33,7 +33,7 @@ class ProductInformation extends Model {
 
         }
 
-        ProductInformation::whereNotIn('id', $stored)->delete();
+        ProductInformation::whereNotIn('id', $stored)->where('productId', $productId)->delete();
 
     }
 
