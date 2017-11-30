@@ -96,9 +96,10 @@ class ManufacturerController extends Controller {
             return redirect()->route('manufacturers.new')->withInput()->with('error', 'You have to enter a name for this manufacturer.');
         }
 
-        if( !$request->has('website') || empty($request->get('website')) ) {
-            return redirect()->route('manufacturers.new')->with('error', 'You have to enter a website for this manufacturer.');
-        }
+        // Website - Not required anymore
+        // if( !$request->has('website') || empty($request->get('website')) ) {
+        //     return redirect()->route('manufacturers.new')->with('error', 'You have to enter a website for this manufacturer.');
+        // }
 
         $image = null;
 
