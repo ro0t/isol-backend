@@ -12,24 +12,40 @@ class Product extends Model {
     protected $table = 'product';
     protected $guarded = ['id'];
 
-    protected function products( $request, $sortBy = false ) {
+    private $metas = [];
+    private $manufacturerMetas = [];
+
+    protected function products( $request, $sortBy = false, $includeMetas = false ) {
+
+        $response = new \stdClass();
 
         $page = $request->has('page') ? $request->get('page') : 1;
         $category = $request->has('category') ? $request->get('category') : null;
         $manufacturer = $request->has('manufacturer') ? $request->get('manufacturer') : null;
         $searchQuery = $request->has('q') ? $request->get('q') : null;
 
+        // if( $searchQuery ) {
+        //     return $this->search($searchQuery);
+        // }
+
+        $products = self::select('product.id', 'product.model_number', 'product_images.image', 'product.slug', 'product.name', 'manufacturer.name as manufacturer', 'manufacturer.slug as manslug', 'manufacturer.id as manid')
+                        ->where('product.active', 1);
+
         if( $searchQuery ) {
-            return $this->search($searchQuery);
+
+            $products->where(function($query) use($searchQuery) {
+                $query->where('product.name', 'LIKE', '%' . $searchQuery . '%')
+                    ->orWhere('product.navision_id', 'LIKE', '%' . $searchQuery . '%')
+                    ->orWhere('product.description', 'LIKE', '%' . $searchQuery . '%');
+            });
+
         }
 
-        $products = self::select('product.id', 'product.model_number', 'product_images.image', 'product.slug', 'product.name', 'manufacturer.name as manufacturer', 'manufacturer.slug as manslug')
-                        ->where('product.active', 1)
-                        ->join('manufacturer', 'product.manufacturer_id', '=', 'manufacturer.id')
-                        ->join('product_images', function($query) {
-                            $query->on('product.id', '=', 'product_images.product_id')->where('main_image', 1);
-                        })
-                        ->limit(PAGE_SIZE, $page);
+        $products->join('manufacturer', 'product.manufacturer_id', '=', 'manufacturer.id')
+                    ->join('product_images', function($query) {
+                        $query->on('product.id', '=', 'product_images.product_id')->where('main_image', 1);
+                    })
+                    ->limit(PAGE_SIZE, $page);
 
         if( $category ) {
 
@@ -49,34 +65,54 @@ class Product extends Model {
 
         $products = $products->get();
 
-        $products = $products->map(function($product) {
+        $products = $products->map(function($product) use($includeMetas) {
 
             // URLify the image so we can display it on the requesting website.
             if( $product->image != null ) {
                 $product->image = url($product->image);
             }
 
-            // This will destroy the sort.
+            // Model number that is null will destroy the sort, so we give it 100k.
             if( $product->model_number == null ) {
                 $product->model_number = 100000;
+            }
+
+            // The product listing page requires some metas for configuration
+            if( $includeMetas ) {
+
+                // Count how many manufacturers have products in this search
+                if( array_key_exists($product->manslug, $this->manufacturerMetas) ) {
+                    $this->manufacturerMetas[$product->manslug]['count']++;
+                } else {
+                    $this->manufacturerMetas[$product->manslug] = [
+                        'slug' => $product->manslug,
+                        'name' => $product->manufacturer,
+                        'count' => 1
+                    ];
+                }
+
             }
 
             return $product;
 
         });
 
-        if( $sortBy ) {
+        if( $sortBy ) { $sorted = $products->sortBy($sortBy); }
 
-            $sorted = $products->sortBy($sortBy);
+        $response->products = $sortBy ? $sorted->values()->all() : $products;
 
-            return $sorted->values()->all();
+        if( $includeMetas ) {
+
+            $this->metas['manufacturers'] = $this->manufacturerMetas;
+            $response->metas = $this->metas;
 
         }
 
-        return $products;
+        return $response;
 
     }
 
+    // ^^^^^^^ Deprecate this method, just use the same as above ^^^^^^
     private function search( $q ) {
 
         if( strlen($q) < 3 ) {
