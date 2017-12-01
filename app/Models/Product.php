@@ -24,19 +24,19 @@ class Product extends Model {
         $manufacturer = $request->has('manufacturer') ? $request->get('manufacturer') : null;
         $searchQuery = $request->has('q') ? $request->get('q') : null;
 
-        // if( $searchQuery ) {
-        //     return $this->search($searchQuery);
-        // }
-
         $products = self::select('product.id', 'product.model_number', 'product_images.image', 'product.slug', 'product.name', 'manufacturer.name as manufacturer', 'manufacturer.slug as manslug', 'manufacturer.id as manid')
                         ->where('product.active', 1);
 
         if( $searchQuery ) {
 
             $products->where(function($query) use($searchQuery) {
-                $query->where('product.name', 'LIKE', '%' . $searchQuery . '%')
-                    ->orWhere('product.navision_id', 'LIKE', '%' . $searchQuery . '%')
-                    ->orWhere('product.description', 'LIKE', '%' . $searchQuery . '%');
+
+                $searchQuery = '%' . $searchQuery . '%';
+
+                $query->where('product.name', 'LIKE', $searchQuery)
+                    ->orWhere('product.description', 'LIKE', $searchQuery)
+                    ->orWhere('product.navision_id', 'LIKE', $searchQuery);
+
             });
 
         }
@@ -112,27 +112,27 @@ class Product extends Model {
 
     }
 
-    // ^^^^^^^ Deprecate this method, just use the same as above ^^^^^^
-    private function search( $q ) {
-
-        if( strlen($q) < 3 ) {
-            return [];
-        }
-
-        $products = self::select('product.id', 'product.navision_id', 'product.slug', 'product.name', 'manufacturer.slug as manslug')
-            ->join('manufacturer', 'product.manufacturer_id', '=', 'manufacturer.id')
-            ->where('product.active', 1)
-            ->where(function($query) use($q) {
-                $query->where('product.name', 'LIKE', '%' . $q . '%')
-                    ->orWhere('product.navision_id', 'LIKE', '%' . $q . '%');
-            })
-            ->limit(5)
-            ->get();
-
-
-        return $products;
-
-    }
+    // // ^^^^^^^ Deprecate this method, just use the same as above ^^^^^^
+    // private function search( $q ) {
+    //
+    //     if( strlen($q) < 3 ) {
+    //         return [];
+    //     }
+    //
+    //     $products = self::select('product.id', 'product.navision_id', 'product.slug', 'product.name', 'manufacturer.slug as manslug')
+    //         ->join('manufacturer', 'product.manufacturer_id', '=', 'manufacturer.id')
+    //         ->where('product.active', 1)
+    //         ->where(function($query) use($q) {
+    //             $query->where('product.name', 'LIKE', '%' . $q . '%')
+    //                 ->orWhere('product.navision_id', 'LIKE', '%' . $q . '%');
+    //         })
+    //         ->limit(5)
+    //         ->get();
+    //
+    //
+    //     return $products;
+    //
+    // }
 
     protected function hideValues($product) {
 
