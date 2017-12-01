@@ -12,7 +12,7 @@ class Product extends Model {
     protected $table = 'product';
     protected $guarded = ['id'];
 
-    protected function products( $request ) {
+    protected function products( $request, $sortBy = false ) {
 
         $page = $request->has('page') ? $request->get('page') : 1;
         $category = $request->has('category') ? $request->get('category') : null;
@@ -23,7 +23,7 @@ class Product extends Model {
             return $this->search($searchQuery);
         }
 
-        $products = self::select('product.id', 'product_images.image', 'product.slug', 'product.name', 'manufacturer.name as manufacturer', 'manufacturer.slug as manslug')
+        $products = self::select('product.id', 'product.model_number', 'product_images.image', 'product.slug', 'product.name', 'manufacturer.name as manufacturer', 'manufacturer.slug as manslug')
                         ->where('product.active', 1)
                         ->join('manufacturer', 'product.manufacturer_id', '=', 'manufacturer.id')
                         ->join('product_images', function($query) {
@@ -51,13 +51,27 @@ class Product extends Model {
 
         $products = $products->map(function($product) {
 
+            // URLify the image so we can display it on the requesting website.
             if( $product->image != null ) {
                 $product->image = url($product->image);
+            }
+
+            // This will destroy the sort.
+            if( $product->model_number == null ) {
+                $product->model_number = 100000;
             }
 
             return $product;
 
         });
+
+        if( $sortBy ) {
+
+            $sorted = $products->sortBy($sortBy);
+
+            return $sorted->values()->all();
+
+        }
 
         return $products;
 

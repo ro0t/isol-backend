@@ -32,7 +32,7 @@ class ProductController extends ResponseController {
 
     protected function list(Request $request) {
 
-        $products = Product::products($request);
+        $products = Product::products($request, 'model_number');
 
         return $this->json([
             'products' => $products

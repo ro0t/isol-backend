@@ -20,6 +20,8 @@
 
                         {!! finput('name', 'Product name', fvalue($data, 'name'), null, true) !!}
 
+                        {!! finput('model_number', 'Model number', fvalue($data, 'model_number')) !!}
+
                         <label class="select--label" for="manufacturer_id">Manufacturer</label>
                         <div class="select">
                             <select id="manufacturer_id" name="manufacturer_id" required>
@@ -37,7 +39,7 @@
                                 @foreach($categories as $pc)
                                     <optgroup label="{{$pc->name}}">
                                         @foreach($pc->children as $childCategory)
-                                        <option value="{{$childCategory->id}}" {!! fselectvalue($pc->id, $data, 'product_category_id') !!}>{{$childCategory->name}}</option>
+                                        <option value="{{$childCategory->id}}" {!! fselectvalue($childCategory->id, $data, 'product_category_id') !!}>{{$childCategory->name}}</option>
                                         @endforeach
                                     </optgroup>
                                 @endforeach

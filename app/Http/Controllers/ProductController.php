@@ -160,6 +160,7 @@ class ProductController extends Controller {
             'manufacturer_id' => 'required|numeric',
             'product_category_id' => 'required|numeric',
             'description' => 'required|string',
+            'model_number' => 'numeric'
         ]);
 
     }
@@ -253,6 +254,7 @@ class ProductController extends Controller {
         $product->manufacturer_id                   = $request->get('manufacturer_id');
         $product->product_category_id               = $request->get('product_category_id');
         $product->description                       = $request->get('description');
+        $product->model_number                      = $request->get('model_number');
         $product->active                            = 1;    // Published
 
         return $product->save();
