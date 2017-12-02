@@ -35,7 +35,8 @@ class Product extends Model {
 
                 $query->where('product.name', 'LIKE', $searchQuery)
                     ->orWhere('product.description', 'LIKE', $searchQuery)
-                    ->orWhere('product.navision_id', 'LIKE', $searchQuery);
+                    ->orWhere('product.navision_id', 'LIKE', $searchQuery)
+                    ->orWhere('manufacturer.name', 'LIKE', $searchQuery);
 
             });
 
@@ -103,7 +104,13 @@ class Product extends Model {
 
         if( $includeMetas ) {
 
-            $this->metas['manufacturers'] = $this->manufacturerMetas;
+            $this->metas['manufacturers'] = [];
+
+            // Clean up the array, we don't need the key.
+            foreach($this->manufacturerMetas as $mfMeta) {
+                $this->metas['manufacturers'][] = $mfMeta;
+            }
+
             $response->metas = $this->metas;
 
         }
@@ -111,28 +118,6 @@ class Product extends Model {
         return $response;
 
     }
-
-    // // ^^^^^^^ Deprecate this method, just use the same as above ^^^^^^
-    // private function search( $q ) {
-    //
-    //     if( strlen($q) < 3 ) {
-    //         return [];
-    //     }
-    //
-    //     $products = self::select('product.id', 'product.navision_id', 'product.slug', 'product.name', 'manufacturer.slug as manslug')
-    //         ->join('manufacturer', 'product.manufacturer_id', '=', 'manufacturer.id')
-    //         ->where('product.active', 1)
-    //         ->where(function($query) use($q) {
-    //             $query->where('product.name', 'LIKE', '%' . $q . '%')
-    //                 ->orWhere('product.navision_id', 'LIKE', '%' . $q . '%');
-    //         })
-    //         ->limit(5)
-    //         ->get();
-    //
-    //
-    //     return $products;
-    //
-    // }
 
     protected function hideValues($product) {
 

@@ -36,7 +36,7 @@ class ProductController extends ResponseController {
 
         return $this->json([
             'products' => $response->products,
-            'metas' => $response->metas
+            'meta' => $response->metas
         ]);
 
     }
