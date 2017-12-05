@@ -25,10 +25,6 @@ class ProductCategory extends Model {
             // Find and return all the children of each parent
             $parent->children = self::where('parent', $parent->id)->where('active', 1)->orderBy('name', 'ASC')->get();
 
-            if( count($parent->children) == 0 ) {
-                $parent->children = [];
-            }
-
         }
 
         return $parents;
