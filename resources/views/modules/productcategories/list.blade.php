@@ -39,15 +39,17 @@
                     </tr>
 
                     <!-- Loop through for children -->
-                    @foreach($productCategory->children as $childCategory)
-                    <tr>
-                        <td colspan="3" class="inset-child">{{$productCategory->name}} <span>&raquo;</span> {{$childCategory->name}}</td>
-                        <td align="right">
-                            <a href="{{route('categories.edit', $childCategory->id)}}">Edit</a>
-                            <a href="{{route('categories.delete', $childCategory->id)}}" class="delete">Delete</a>
-                        </td>
-                    </tr>
-                    @endforeach
+                    if(isset($productCategory->children) && count($productCategory->children) > 0)
+                        @foreach($productCategory->children as $childCategory)
+                        <tr>
+                            <td colspan="3" class="inset-child">{{$productCategory->name}} <span>&raquo;</span> {{$childCategory->name}}</td>
+                            <td align="right">
+                                <a href="{{route('categories.edit', $childCategory->id)}}">Edit</a>
+                                <a href="{{route('categories.delete', $childCategory->id)}}" class="delete">Delete</a>
+                            </td>
+                        </tr>
+                        @endforeach
+                    @endif
 
                     @endforeach
                 </tbody>
