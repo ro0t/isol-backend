@@ -89,6 +89,15 @@ class ProductCategoryController extends Controller {
 
         if($pc != null) {
 
+            if( $request->hasFile('image') ) {
+
+                $extension = $request->image->extension();
+                $fileName = 'm-' . md5($request->image->path()) . '.' . (($extension == 'jpeg' || $extension == 'jpg') ? 'jpg' : 'png');
+                $request->image->storeAs('product-images', $fileName);
+                $pc->image = '/product-images/' . $fileName;
+
+            }
+
             $pc->name = $request->get('name');
             $pc->slug = str_slug($request->get('name'));
             $pc->parent = $request->get('parent');
@@ -108,11 +117,21 @@ class ProductCategoryController extends Controller {
             return redirect()->route('categories.new')->with('error', 'You have to enter a name for this product category.');
         }
 
+        if( $request->hasFile('image') ) {
+
+            $extension = $request->image->extension();
+            $fileName = 'm-' . md5($request->image->path()) . '.' . (($extension == 'jpeg' || $extension == 'jpg') ? 'jpg' : 'png');
+            $request->image->storeAs('product-images', $fileName);
+            $image = '/product-images/' . $fileName;
+
+        }
+
         $pc = ProductCategory::create([
             'name' => $request->get('name'),
             'slug' => str_slug($request->get('name')),
             'parent' => $request->get('parent'),
             'show_menu' => 0,
+            'image' => (isset($image)) ? $image : null,
         ]);
 
         if( $pc ) {

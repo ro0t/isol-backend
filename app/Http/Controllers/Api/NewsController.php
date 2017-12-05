@@ -20,7 +20,7 @@ class NewsController extends ResponseController {
 
             if($item->image != null)
                 $item->image = asset($item->image);
-            
+
             return $item;
 
         });
@@ -58,11 +58,13 @@ class NewsController extends ResponseController {
 
         $detail = News::select('id', 'slug', 'title', 'content', 'image', 'created_at')->where('slug', $id)->where('active', 1)->first();
 
-        if( $detail->image != null )
-            $detail->image = asset($detail->image);
-
         if($detail) {
-            return $this->json([ 'detail' => $detail ]);
+
+            if( $detail->image != null ) {
+                $detail->image = asset($detail->image);
+            }
+
+            return $this->json([ 'news' => $detail ]);
         }
 
         return $this->json([ 'message' => 'Could not find requested news' ], 404);

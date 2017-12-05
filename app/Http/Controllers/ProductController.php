@@ -160,7 +160,7 @@ class ProductController extends Controller {
             'manufacturer_id' => 'required|numeric',
             'product_category_id' => 'required|numeric',
             'description' => 'required|string',
-            'model_number' => 'numeric'
+            //'model_number' => 'numeric'
         ]);
 
     }

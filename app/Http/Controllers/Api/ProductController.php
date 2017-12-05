@@ -13,23 +13,6 @@ class ProductController extends ResponseController {
         parent::__construct($request);
     }
 
-    protected function categories(Request $request) {
-
-        $categories = null;
-
-        if( $request->has('show') && $request->get('show') == 'menu' ) {
-            $categories = ProductCategory::getMenuItems();
-        }
-
-        if( $request->has('show') && $request->get('show') == 'website' ) {
-            $categories = ProductCategory::getWebsiteItems();
-        }
-
-        return $this->json([
-            'categories' => $categories
-        ]);
-    }
-
     protected function list(Request $request) {
 
         $response = Product::products($request, 'model_number', true);

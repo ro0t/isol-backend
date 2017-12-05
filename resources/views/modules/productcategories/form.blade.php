@@ -4,7 +4,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-4">
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 {{ csrf_field() }}
 
                 {!! finput('name', 'Name', fvalue($data, 'name')) !!}
@@ -18,6 +18,8 @@
                         @endforeach
                     </select>
                 </div>
+
+                {!! fimage('image', 'Category Image (w:430 h:280)', fvalue($data, 'image')) !!}
 
                 <button type="submit" class="btn btn-success">Save changes</button>
                 <a href="{{route('categories')}}" class="btn btn-danger">Cancel</a>

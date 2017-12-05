@@ -109,7 +109,8 @@ class NewsController extends Controller {
         }
 
         $post->title = $request->get('title');
-        $post->slug = str_slug($post->title) . '-' . date('Y-m-d');
+        // Lets NOT modify the slug.
+        /*$post->slug = str_slug($post->title) . '-' . date('Y-m-d');*/
         $post->content = $request->get('content');
 
         if( $post->save() ) {

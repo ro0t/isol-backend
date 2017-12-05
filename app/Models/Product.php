@@ -24,11 +24,10 @@ class Product extends Model {
         $manufacturer = $request->has('manufacturer') ? $request->get('manufacturer') : null;
         $searchQuery = $request->has('q') ? $request->get('q') : null;
 
-        $products = self::select('product.id', 'product.model_number', 'product_images.image', 'product.slug', 'product.name', 'manufacturer.name as manufacturer', 'manufacturer.slug as manslug', 'manufacturer.id as manid')
+        $products = self::select('product.id', 'product.model_number', 'product_images.image', 'product.slug', 'product.name', 'manufacturer.name as manufacturer', 'manufacturer.slug as manslug', 'manufacturer.id as manid', 'manufacturer.image as manimg')
                         ->where('product.active', 1);
 
         if( $searchQuery ) {
-
             $products->where(function($query) use($searchQuery) {
 
                 $searchQuery = '%' . $searchQuery . '%';
@@ -39,29 +38,22 @@ class Product extends Model {
                     ->orWhere('manufacturer.name', 'LIKE', $searchQuery);
 
             });
-
         }
 
         $products->join('manufacturer', 'product.manufacturer_id', '=', 'manufacturer.id')
-                    ->join('product_images', function($query) {
+                    ->leftJoin('product_images', function($query) {
                         $query->on('product.id', '=', 'product_images.product_id')->where('main_image', 1);
                     })
                     ->limit(PAGE_SIZE, $page);
 
         if( $category ) {
-
-            $products->where('product_category_id', function($query) use($category) {
-                $query->select('id')->from(with(new ProductCategory)->getTable())->where('slug', $category);
-            });
-
+            $products->where('product_category_id', $category);
         }
 
         if( $manufacturer ) {
-
             $products->where('manufacturer_id', function($query) use($manufacturer) {
                 $query->select('id')->from(with(new Manufacturer)->getTable())->where('slug', $manufacturer);
             });
-
         }
 
         $products = $products->get();
@@ -86,8 +78,9 @@ class Product extends Model {
                     $this->manufacturerMetas[$product->manslug]['count']++;
                 } else {
                     $this->manufacturerMetas[$product->manslug] = [
-                        'slug' => $product->manslug,
+                        'id' => $product->manslug,
                         'name' => $product->manufacturer,
+                        'image' => asset($product->manimg),
                         'count' => 1
                     ];
                 }
