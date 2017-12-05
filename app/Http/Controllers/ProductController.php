@@ -43,11 +43,21 @@ class ProductController extends Controller {
         $this->breadcrumbs('Products');
 
         $status = $request->has('status') && $request->get('status') != 0 ? $request->get('status') : 1;
-        $products = Product::where('active', $status)->get();
+        $products = Product::where('active', $status);
+
+        if( $request->has('product_category_id') && !empty($request->get('product_category_id')) ) {
+            $products = $products->where('product_category_id', $request->get('product_category_id'));
+        }
+
+        if( $request->has('manufacturer_id') && !empty($request->get('manufacturer_id')) ) {
+            $products = $products->where('manufacturer_id', $request->get('manufacturer_id') );
+        }
 
         return view('modules.products.list')
             ->with('status', $status)
-            ->with('products', $products);
+            ->with('categories', $this->categories)
+            ->with('manufacturers', $this->manufacturers)
+            ->with('products', $products->paginate(50));
     }
 
     public function create() {
@@ -298,5 +308,44 @@ class ProductController extends Controller {
         }
 
     }
+
+    // public function randomProductGenerator() {
+    //
+    //     $howMany = 50;
+    //
+    //     for($i = 0; $i < $howMany; $i++) {
+    //
+    //         $product = Product::where('active', 1)->inRandomOrder()->first();
+    //         $randomCategory = ProductCategory::whereNotNull('parent')->where('active', 1)->inRandomOrder()->first();
+    //
+    //         $manufacturers = [1,2,3,4];
+    //
+    //         $prod = Product::create([
+    //             'name' => $product->name,
+    //             'product_category_id' => $randomCategory->id,
+    //             'slug' => md5($product->slug . '-' . $i),
+    //             'model_number' => mt_rand(),
+    //             'navision_id' => '999999999' . $i,
+    //             'description' => $product->description,
+    //             'manufacturer_id' => $manufacturers[array_rand($manufacturers)],
+    //             'active' => 1
+    //         ]);
+    //
+    //         if( $prod->id ) {
+    //
+    //             $images = ['/product-images/20c0e01281987598b50db42cf516706c.jpg', '/product-images/1292d58e2dd8a3a83092b9f638ff689b.jpg', '/product-images/4ae01c0a18e3c2c093978b7c7a650db3.jpg', '/product-images/e3783b02e0e9b88abcbbb39349fa2838.jpg'];
+    //
+    //             ProductImages::create([
+    //                 'product_id' => $prod->id,
+    //                 'main_image' => 1,
+    //                 'image' => $images[array_rand($images)]
+    //             ]);
+    //         }
+    //
+    //     }
+    //
+    //     return 'You got randomized!';
+    //
+    // }
 
 }

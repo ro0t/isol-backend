@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\ResponseController;
 use Illuminate\Http\Request;
-use App\Models\Manufacturer;
+use App\Models\Employee;
 
-class ManufacturerController extends ResponseController {
+class EmployeeController extends ResponseController {
 
     public function __construct(Request $request) {
         parent::__construct($request);
@@ -14,11 +14,9 @@ class ManufacturerController extends ResponseController {
 
     protected function list(Request $request) {
 
-        if( $request->has('total') && $request->get('total') == 'count') { return $this->json([ 'manufacturers' => Manufacturer::getTotalCount() ]); }
+        $employees = Employee::getActive();
 
-        $manufacturers = Manufacturer::getActive();
-
-        $manufacturers = $manufacturers->map(function($item, $key) {
+        $employees = $employees->map(function($item) {
 
             $item->image = asset($item->image);
             return $item;
@@ -26,7 +24,7 @@ class ManufacturerController extends ResponseController {
         });
 
         return $this->json([
-            'manufacturers' => $manufacturers
+            'employees' => $employees
         ]);
 
     }

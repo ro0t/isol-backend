@@ -8767,6 +8767,24 @@ aside#igw-sidebar:hover a span {
   margin-bottom: 25px;
 }
 
+#igw-table-actions:before,
+#igw-table-actions:after {
+  content: " ";
+  display: table;
+}
+
+#igw-table-actions:after {
+  clear: both;
+}
+
+#igw-table-actions .left-side {
+  float: left;
+}
+
+#igw-table-actions .right-side {
+  float: right;
+}
+
 #igw-table-actions .igw-table-action {
   display: inline-block;
   margin-right: 12.5px;
@@ -8791,6 +8809,10 @@ aside#igw-sidebar:hover a span {
 #igw-table-actions .igw-table-action .btn-toggle:hover {
   background: #38465A;
   color: #fff;
+}
+
+#igw-table-actions .igw-table-action .select {
+  min-width: 200px;
 }
 
 .note--container {
@@ -9039,14 +9061,14 @@ form .input--image .preview-image img {
   max-width: 200px;
 }
 
-form label.select--label {
+label.select--label {
   display: block;
   font-family: GraphikMd, Graphik, sans-serif;
   color: #000;
   font-size: 16px;
 }
 
-form .select {
+.select {
   padding: 0;
   margin: 0;
   overflow: hidden;
@@ -9058,7 +9080,7 @@ form .select {
   position: relative;
 }
 
-form .select:after {
+.select:after {
   content: '';
   position: absolute;
   top: 19px;
@@ -9069,7 +9091,7 @@ form .select:after {
   height: 18px;
 }
 
-form .select select {
+.select select {
   padding: 5px 8px;
   width: 130%;
   border: none;
@@ -9082,7 +9104,7 @@ form .select select {
   appearance: none;
 }
 
-form .select select:focus {
+.select select:focus {
   outline: none;
 }
 

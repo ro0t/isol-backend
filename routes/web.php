@@ -23,10 +23,24 @@ Route::get('/', 'PageController@index')->name('home');
 Route::group(['prefix' => 'pages'], function() {
 
     Route::get('edit/{id}', 'PageController@edit')->name('page.edit');
+    Route::get('edit/special/{layout}', 'PageController@editSpecial')->name('page.edit.special');
+    Route::get('frontpage/edit', 'PageController@editFrontpage')->name('frontpage');
     Route::get('seo/{id}', 'PageController@seo')->name('page.seo');
 
     Route::post('edit/{id}', 'PageController@change');
     Route::post('seo/{id}', 'PageController@changeSeo');
+
+});
+
+Route::group([ 'prefix' => 'employees'], function() {
+
+    Route::get('/', 'EmployeesController@index')->name('employees');
+    Route::get('new', 'EmployeesController@create')->name('employees.new');
+    Route::get('edit/{id}', 'EmployeesController@edit')->name('employees.edit');
+    Route::get('delete/{id}', 'EmployeesController@delete')->name('employees.delete');
+
+    Route::post('new', 'EmployeesController@createNew');
+    Route::post('edit/{id}', 'EmployeesController@change');
 
 });
 

@@ -23,7 +23,11 @@
                             @if($page->editable)
                             <a href="{{route('page.edit', $page->id)}}">Edit</a>
                             @else
-                            <span style="text-decoration: line-through; opacity: .6">Edit</span>
+                                @if( $page->admin_layout_key != "DEFAULT")
+                                <a href="{{route('page.edit.special', strtolower($page->admin_layout_key))}}">Edit</a>
+                                @else
+                                <span style="text-decoration: line-through; opacity: .6">Edit</span>
+                                @endif
                             @endif
                         </td>
                     </tr>

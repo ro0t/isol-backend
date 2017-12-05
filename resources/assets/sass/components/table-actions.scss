@@ -1,5 +1,14 @@
 #igw-table-actions {
     margin-bottom: $gutter;
+    @include clearfix;
+
+    .left-side {
+        float: left;
+    }
+
+    .right-side {
+        float: right;
+    }
 
     .igw-table-action {
         display: inline-block;
@@ -23,6 +32,10 @@
                 background: $brand-secondary;
                 color: #fff;
             }
+        }
+
+        .select {
+            min-width: 200px;
         }
 
     }

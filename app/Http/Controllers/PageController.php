@@ -36,6 +36,15 @@ class PageController extends Controller {
             ->with('data', $pages);
     }
 
+    public function editFrontpage() {
+
+        $this->breadcrumbs('Pages', 'Frontpage');
+
+        return view('modules.frontpage.editor')
+            ->with('data', null);
+
+    }
+
     /**
     *   Load the SEO page options for this page
     *
@@ -69,6 +78,16 @@ class PageController extends Controller {
         return view('modules.pages.form')
             ->with('page', $page)
             ->with('pageContent', $pageContent);
+
+    }
+
+    /**
+    *   Redirect handler for special layouts
+    */
+    public function editSpecial($layout) {
+
+        if( $layout == 'frontpage' ) { return redirect()->route('frontpage'); }
+        if( $layout == 'employees' ) { return redirect()->route('employees'); }
 
     }
 

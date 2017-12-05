@@ -21,6 +21,10 @@ Route::get('categories', 'Api\CategoryController@categories');
 Route::get('manufacturers', 'Api\ManufacturerController@list');
 Route::get('pages/{slug}', 'Api\PageController@getContent');
 
+Route::get('employees', 'Api\EmployeeController@list');
+
 Route::get('news', 'Api\NewsController@latestNews');
 Route::get('news/all', 'Api\NewsController@allNews');
 Route::get('news/{slug}', 'Api\NewsController@detail');
+
+Route::get('widgets', 'Api\PageController@getContentWidgets');

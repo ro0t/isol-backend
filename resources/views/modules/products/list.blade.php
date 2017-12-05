@@ -4,16 +4,55 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-24" id="igw-table-actions">
-            {!! fcreate('products.new', 'New product') !!}
 
-            <div class="igw-table-action">
-                <a href="{{route('products')}}?status={!! $status == 1 ? 2 : 1 !!}" class="btn btn-create btn-toggle">
-                    @if($status == 1)
-                    <span>View unpublished</span>
-                    @else
-                    <span>View published</span>
-                    @endif
-                </a>
+            <div class="left-side">
+                {!! fcreate('products.new', 'New product') !!}
+
+                <div class="igw-table-action">
+                    <a href="{{route('products')}}?status={!! $status == 1 ? 2 : 1 !!}" class="btn btn-create btn-toggle">
+                        @if($status == 1)
+                        <span>View unpublished</span>
+                        @else
+                        <span>View published</span>
+                        @endif
+                    </a>
+                </div>
+            </div>
+
+            <div class="right-side">
+
+                <form method="get">
+
+                    <input type="hidden" name="page" value="{{request()->get('page') == null ? 1 : request()->get('page')}}">
+
+                    <div class="igw-table-action">
+                        <div class="select">
+                            <select id="product_category_id" name="product_category_id" onchange="this.form.submit()">
+                                <option value="">Filter by category</option>
+                                @foreach($categories as $category)
+                                <option value="{{$category->id}}" {{ request()->get('product_category_id') == $category->id ? 'selected' : '' }}>{{$category->name}}</option>
+                                @if($category->children)
+                                    @foreach($category->children as $child)
+                                    <option value="{{$child->id}}" {{ request()->get('product_category_id') == $child->id ? 'selected' : '' }}>&nbsp;&nbsp;&nbsp;&nbsp;- {{$child->name}}</option>
+                                    @endforeach
+                                @endif
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="igw-table-action">
+                        <div class="select">
+                            <select id="manufacturer_id" name="manufacturer_id" onchange="this.form.submit()">
+                                <option value="">Filter manufacturer</option>
+                                @foreach($manufacturers as $mf)
+                                <option value="{{$mf->id}}" {{ request()->get('manufacturer_id') == $mf->id ? 'selected' : '' }}>{{$mf->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </form>
+
             </div>
 
         </div>
@@ -46,6 +85,8 @@
                     @endforeach
                 </tbody>
             </table>
+
+            {{ $products->links() }}
         </div>
     </div>
 </div>
