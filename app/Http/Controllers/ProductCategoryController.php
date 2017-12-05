@@ -41,8 +41,6 @@ class ProductCategoryController extends Controller {
         $this->breadcrumbs('Products', 'Categories', 'Create');
         $parents = ProductCategory::getParents();
 
-        dd($parents);
-
         return view('modules.productcategories.form')
             ->with('parents', $parents)
             ->with('data', null);
