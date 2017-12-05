@@ -39,7 +39,7 @@
                     </tr>
 
                     <!-- Loop through for children -->
-                    if(isset($productCategory->children) && count($productCategory->children) > 0)
+                    @if(isset($productCategory->children) && count($productCategory->children) > 0)
                         @foreach($productCategory->children as $childCategory)
                         <tr>
                             <td colspan="3" class="inset-child">{{$productCategory->name}} <span>&raquo;</span> {{$childCategory->name}}</td>
