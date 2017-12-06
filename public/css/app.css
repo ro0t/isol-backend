@@ -9342,6 +9342,216 @@ label.select--label {
   }
 }
 
+.frontpage-container {
+  margin: 25px;
+}
+
+.frontpage {
+  margin-bottom: 25px;
+}
+
+.frontpage .frontpage-sortable {
+  list-style-type: none;
+  width: 90%;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.frontpage .frontpage-sortable:before,
+.frontpage .frontpage-sortable:after {
+  content: " ";
+  display: table;
+}
+
+.frontpage .frontpage-sortable:after {
+  clear: both;
+}
+
+.frontpage .frontpage-sortable li {
+  display: inline-block;
+  width: 50%;
+  height: auto;
+  border-radius: 3px;
+  padding: 25px;
+  text-align: center;
+  border: 1px solid #497DC7;
+  background: #e5ecf7;
+  margin: 12.5px;
+  cursor: pointer;
+  -webkit-transition: background-color .2s linear;
+  transition: background-color .2s linear;
+  padding-bottom: 50px;
+  position: relative;
+}
+
+.frontpage .frontpage-sortable li:after {
+  content: 'CLICK TO OPEN CONFIGURATION';
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+  text-align: center;
+  color: #497DC7;
+  text-transform: uppercase;
+  font-size: 11px;
+  opacity: .5;
+  -webkit-transition: opacity .2s ease-in;
+  transition: opacity .2s ease-in;
+}
+
+.frontpage .frontpage-sortable li:hover {
+  background: #edf2f9;
+  border: 1px solid #abc3e5;
+}
+
+.frontpage .frontpage-sortable li:hover:after {
+  opacity: 1;
+}
+
+.frontpage .frontpage-sortable li .frontpage-module-type {
+  text-transform: uppercase;
+  color: #497DC7;
+  font-size: 12px;
+  padding-top: 50px;
+  display: block;
+}
+
+.frontpage .frontpage-sortable li .frontpage-module-data {
+  font-size: 16px;
+  font-family: GraphikMd, sans-serif;
+}
+
+.frontpage .frontpage-sortable li.smaller {
+  width: 25%;
+}
+
+.frontpage .frontpage-sortable li.large {
+  width: 45%;
+}
+
+.frontpage-type-editor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 99999;
+  display: none;
+}
+
+.frontpage-type-editor .underlay {
+  background: rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  -webkit-animation: fadeInUnderlay .25s ease-in-out;
+          animation: fadeInUnderlay .25s ease-in-out;
+}
+
+.frontpage-type-editor .type-settings {
+  width: 500px;
+  background: #fff;
+  border-radius: 5px;
+  padding: 25px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  -webkit-transform: translateY(50%) translateX(-50%);
+          transform: translateY(50%) translateX(-50%);
+  -webkit-animation: fadeInFromBottom .5s ease-in-out;
+          animation: fadeInFromBottom .5s ease-in-out;
+  -webkit-box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.frontpage-type-editor .type-settings .type-actions:before,
+.frontpage-type-editor .type-settings .type-actions:after {
+  content: " ";
+  display: table;
+}
+
+.frontpage-type-editor .type-settings .type-actions:after {
+  clear: both;
+}
+
+.frontpage-type-editor .type-settings .type-actions .save,
+.frontpage-type-editor .type-settings .type-actions .cancel {
+  background: #399E6A;
+  color: #fff;
+  padding: 10px 15px;
+  font-weight: GraphikMd, sans-serif;
+  cursor: pointer;
+  -webkit-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+  border-radius: 25px;
+}
+
+.frontpage-type-editor .type-settings .type-actions .save:hover,
+.frontpage-type-editor .type-settings .type-actions .cancel:hover {
+  background: #328b5d;
+}
+
+.frontpage-type-editor .type-settings .type-actions .save {
+  float: left;
+}
+
+.frontpage-type-editor .type-settings .type-actions .cancel {
+  float: right;
+  background: #AC5252;
+}
+
+.frontpage-type-editor .type-settings .type-actions .cancel:hover {
+  background: #9b4a4a;
+}
+
+@-webkit-keyframes fadeInUnderlay {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUnderlay {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeInFromBottom {
+  0% {
+    bottom: 0;
+    opacity: 0;
+  }
+
+  100% {
+    bottom: 50%;
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInFromBottom {
+  0% {
+    bottom: 0;
+    opacity: 0;
+  }
+
+  100% {
+    bottom: 50%;
+    opacity: 1;
+  }
+}
+
 /* The switch - the box around the slider */
 
 .switch {
