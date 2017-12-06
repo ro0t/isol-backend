@@ -34080,6 +34080,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 
 
+var TYPES = { PRODUCT_IMAGES: 0, PAGE_IMAGES: 1 };
+
 var ProductImages = function () {
     function ProductImages() {
         _classCallCheck(this, ProductImages);
@@ -34091,6 +34093,7 @@ var ProductImages = function () {
 
             this.swal = swal;
             this.container = document.querySelector('.product-images');
+            this.type = TYPES.PRODUCT_IMAGES;
 
             if (this.container != null) {
 
@@ -34117,9 +34120,11 @@ var ProductImages = function () {
         key: 'checkForImages',
         value: function checkForImages() {
 
-            if (window.productImages !== undefined) {
+            if (window.productImages !== undefined || window.pageImages !== undefined) {
 
-                var data = JSON.parse(window.productImages);
+                this.type = window.productImages !== undefined ? TYPES.PRODUCT_IMAGES : TYPES.PAGE_IMAGES;
+
+                var data = JSON.parse(this.type == TYPES.PRODUCT_IMAGES ? window.productImages : window.pageImages);
 
                 if (data.length > 0) {
 
@@ -34179,6 +34184,11 @@ var ProductImages = function () {
         key: 'setMainImage',
         value: function setMainImage(image) {
 
+            // Disable setting main image for Page Images
+            if (this.type == TYPES.PAGE_IMAGES) {
+                return;
+            }
+
             var children = this.images.children;
 
             for (var c in children) {
@@ -34215,7 +34225,9 @@ var ProductImages = function () {
 
                 if (result.value) {
 
-                    axios.get('/product/deleteImage/' + image.id).then(function (res) {
+                    var deleteImageUrl = _this2.type == TYPES.PRODUCT_IMAGES ? '/product/deleteImage/' : '/pages/deleteImage/';
+
+                    axios.get(deleteImageUrl + image.id).then(function (res) {
                         parent.remove();
                         __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()('Deleted!', 'Your file has been deleted.', 'success');
                         _this2.hasImages();
@@ -34502,6 +34514,17 @@ var Textarea = function () {
         value: function initialize(textarea, options) {
 
             options = options ? options : {
+                btnsDef: {
+                    // Customizables dropdowns
+                    image: {
+                        dropdown: ['insertImage', 'upload'],
+                        ico: 'insertImage'
+                    }
+                },
+                btns: [['viewHTML'], ['undo', 'redo'], // Only supported in Blink browsers
+                ['formatting'], ['strong', 'em', 'del'],
+                //['superscript', 'subscript'],
+                ['link'], ['image'], ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'], ['unorderedList', 'orderedList'], ['horizontalRule'], ['removeformat'], ['fullscreen']],
                 //btns: ['strong','italic','underline','insertImage'],
                 autogrow: true,
                 removeformatPasted: true

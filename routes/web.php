@@ -20,13 +20,17 @@ Route::get('logout', function() {
 
 Route::get('/', 'PageController@index')->name('home');
 
+Route::post('/utility/uploadPhoto', 'UtilityController@uploadPhoto');
+
 Route::group(['prefix' => 'pages'], function() {
 
     Route::get('edit/{id}', 'PageController@edit')->name('page.edit');
     Route::get('edit/special/{layout}', 'PageController@editSpecial')->name('page.edit.special');
     Route::get('frontpage/edit', 'PageController@editFrontpage')->name('frontpage');
     Route::get('seo/{id}', 'PageController@seo')->name('page.seo');
+    Route::get('deleteImage/{id}', 'PageController@deleteImage');
 
+    Route::post('images/{id}', 'PageController@addImages')->name('page.images');
     Route::post('edit/{id}', 'PageController@change');
     Route::post('seo/{id}', 'PageController@changeSeo');
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Page;
 use App\Models\PageContent;
+use App\Models\PageImages;
 use App\Models\PageSEO;
 
 class PageController extends Controller {
@@ -72,11 +73,13 @@ class PageController extends Controller {
         if($page == null) { return \App::abort(404); }
 
         $pageContent = PageContent::getContent($page->id);
+        $images = PageImages::getImagesFor($page->id);
 
         $this->breadcrumbs('Pages', $page->name, 'Edit');
 
         return view('modules.pages.form')
             ->with('page', $page)
+            ->with('images', $images)
             ->with('pageContent', $pageContent);
 
     }
@@ -97,8 +100,10 @@ class PageController extends Controller {
 
         if($page == null) { return \App::abort(404); }
 
-        $pageContent = PageContent::where('page_id', $page->id)->firstOrCreate(['page_id' => $page->id], ['content' => '']);
+        $page->show_extra_widgets = $request->get('show_extra_widgets');
+        $page->save();
 
+        $pageContent = PageContent::where('page_id', $page->id)->firstOrCreate(['page_id' => $page->id], ['content' => '']);
         $pageContent->content = $request->get('content');
 
         if( $pageContent->save() ) {
@@ -127,6 +132,66 @@ class PageController extends Controller {
         } else {
             return redirect()->route('page.seo', $page->id)->withInput()->with('error', 'Something went wrong when saving SEO, please try again.');
         }
+
+    }
+
+    /**
+    *   PageImages Addition
+    *   - Upload one or more files and display it in a special lightbox object on the website
+    */
+    public function addImages(Request $request, $id) {
+
+        $page = Page::find($id);
+
+        if($page != null) {
+
+            if( $request->hasFile('images') ) {
+
+                $count = 0;
+                $images= [];
+
+                $uploadedCount = count($request->images);
+
+                foreach( $request->images as $image ) {
+
+                    $ext = $image->extension();
+                    $fileName = md5( $image->path() . time() ) . '.' . ($ext == 'jpeg' ? 'jpg' : $ext);
+                    $image->storeAs('article-images', $fileName);
+
+                    $path = '/article-images/' . $fileName;
+
+                    if(($img = PageImages::storeImage($id, $path))) {
+                        $images[] = [ 'image' => $img->image, 'page_id' => $id, 'id' => $img->id ];
+                        $count++;
+                    }
+
+                }
+
+                return response()->json(['message' => $count . ' images uploaded successfully', 'images' => $images], 200);
+
+            }
+
+        }
+
+        return response()->json([ 'message' => 'Could not find page with id: ' . $id], 404);
+
+    }
+
+    public function deleteImage($id) {
+
+        $image = PageImages::find($id);
+
+        if( $image ) {
+
+            $image->active = 0;
+
+            if($image->save()) {
+                return response()->json(['message' => 'Image has been deleted.'], 200);
+            }
+
+        }
+
+        return response()->json(['message' => 'Could not delete image'], 500);
 
     }
 

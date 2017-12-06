@@ -29,6 +29,27 @@ class Textarea {
     initialize(textarea, options) {
 
         options = options ? options : {
+            btnsDef: {
+                // Customizables dropdowns
+                image: {
+                    dropdown: ['insertImage', 'upload'],
+                    ico: 'insertImage'
+                }
+            },
+            btns: [
+                ['viewHTML'],
+                ['undo', 'redo'], // Only supported in Blink browsers
+                ['formatting'],
+                ['strong', 'em', 'del'],
+                //['superscript', 'subscript'],
+                ['link'],
+                ['image'],
+                ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+                ['unorderedList', 'orderedList'],
+                ['horizontalRule'],
+                ['removeformat'],
+                ['fullscreen']
+            ],
             //btns: ['strong','italic','underline','insertImage'],
             autogrow: true,
             removeformatPasted: true

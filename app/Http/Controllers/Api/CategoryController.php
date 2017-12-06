@@ -32,9 +32,7 @@ class CategoryController extends ResponseController {
             }
         }
 
-        return $this->json([
-            'categories' => $categories
-        ]);
+        return $this->json([ 'categories' => $categories ]);
     }
 
 }

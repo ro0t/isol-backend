@@ -1,11 +1,14 @@
 import swal from 'sweetalert2';
 
+const TYPES = { PRODUCT_IMAGES: 0, PAGE_IMAGES: 1};
+
 export default class ProductImages {
 
     activate(swal) {
 
         this.swal = swal;
         this.container = document.querySelector('.product-images');
+        this.type = TYPES.PRODUCT_IMAGES;
 
         if( this.container != null ) {
 
@@ -33,9 +36,11 @@ export default class ProductImages {
 
     checkForImages() {
 
-        if( window.productImages !== undefined ) {
+        if( window.productImages !== undefined || window.pageImages !== undefined ) {
 
-            let data = JSON.parse(window.productImages);
+            this.type = window.productImages !== undefined ? TYPES.PRODUCT_IMAGES : TYPES.PAGE_IMAGES;
+
+            let data = JSON.parse(this.type == TYPES.PRODUCT_IMAGES ? window.productImages : window.pageImages);
 
             if( data.length > 0 ) {
 
@@ -95,6 +100,9 @@ export default class ProductImages {
 
     setMainImage(image) {
 
+        // Disable setting main image for Page Images
+        if( this.type == TYPES.PAGE_IMAGES ) { return; }
+
         let children = this.images.children;
 
         for(let c in children) {
@@ -130,7 +138,9 @@ export default class ProductImages {
 
           if (result.value) {
 
-              axios.get('/product/deleteImage/' + image.id)
+              let deleteImageUrl = this.type == TYPES.PRODUCT_IMAGES ? '/product/deleteImage/' : '/pages/deleteImage/';
+
+              axios.get( deleteImageUrl + image.id )
                 .then((res) => {
                     parent.remove();
                     swal( 'Deleted!', 'Your file has been deleted.', 'success' );

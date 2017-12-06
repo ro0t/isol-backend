@@ -15,15 +15,18 @@
     'use strict';
 
     var defaultOptions = {
-        serverPath: '',
-        fileFieldName: 'fileToUpload',
+        serverPath: '/utility/uploadPhoto',
+        fileFieldName: 'trumbowyg_image',
         data: [],                       // Additional data for ajax [{name: 'key', value: 'value'}]
-        headers: {},                    // Additional headers
+        headers: {                      // Additional headers
+             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
         xhrFields: {},                  // Additional fields
         urlPropertyName: 'file',        // How to get url from the json response (for instance 'url' for {url: ....})
-        statusPropertyName: 'success',  // How to get status from the json response 
+        statusPropertyName: 'success',  // How to get status from the json response
         success: undefined,             // Success callback: function (data, trumbowyg, $modal, values) {}
-        error: undefined                // Error callback: function () {}
+        error: undefined,                // Error callback: function () {},
+        imageWidthModalEdit: true
     };
 
     function getDeep(object, propertyParts) {
@@ -76,7 +79,7 @@
                 upload: '上傳',
                 file: '文件',
                 uploadError: '錯誤'
-            },            
+            },
             ru: {
                 upload: 'Загрузка',
                 file: 'Файл',
@@ -119,10 +122,10 @@
                                             accept: 'image/*'
                                         }
                                     },
-                                    alt: {
+                                    /*alt: {
                                         label: 'description',
                                         value: trumbowyg.getRangeText()
-                                    }
+                                    }*/
                                 },
 
                                 // Callback
@@ -133,9 +136,9 @@
                                     trumbowyg.o.plugins.upload.data.map(function (cur) {
                                         data.append(cur.name, cur.value);
                                     });
-                                    
+
                                     $.map(values, function(curr, key){
-                                        if(key !== 'file') { 
+                                        if(key !== 'file') {
                                             data.append(key, curr);
                                         }
                                     });
