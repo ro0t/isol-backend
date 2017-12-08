@@ -173,6 +173,7 @@ class Product extends Model {
                 "WHERE a.product_category_id = {$categoryId} " .
                 "AND a.active = 1 " .
                 "AND c.main_image = 1 " .
+                "AND a.id != {$originalProduct->id} " .
                 "ORDER BY b.totalCount DESC, a.id ASC LIMIT 3"));
 
         if( count($related) > 0 ) {

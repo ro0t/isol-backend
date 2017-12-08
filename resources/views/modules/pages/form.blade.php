@@ -22,7 +22,7 @@
                     </select>
                 </div>
 
-                <div class="input">
+                <!-- <div class="input">
                     <label>Page Images</label>
                     <span class="input__description" style="max-width: 100%;">Right click an image to remove the image.</span>
                 </div>
@@ -39,7 +39,7 @@
                             </g>
                         </svg>
                     </div>
-                </div>
+                </div> -->
 
                 <button type="submit" class="btn btn-success">Save changes</button>
                 <a href="{{route('home')}}" class="btn btn-danger">Cancel</a>

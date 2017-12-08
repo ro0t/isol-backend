@@ -7,6 +7,7 @@ use App\Models\Page;
 use App\Models\PageContent;
 use App\Models\PageImages;
 use App\Models\PageSEO;
+use App\Models\Frontpage;
 
 class PageController extends Controller {
 
@@ -35,15 +36,6 @@ class PageController extends Controller {
 
         return view('modules.pages.list')
             ->with('data', $pages);
-    }
-
-    public function editFrontpage() {
-
-        $this->breadcrumbs('Pages', 'Frontpage');
-
-        return view('modules.frontpage.editor')
-            ->with('data', null);
-
     }
 
     /**

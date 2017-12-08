@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\ResponseController;
 use Illuminate\Http\Request;
+use App\Models\Frontpage;
 use App\Models\Page;
 use App\Models\PageContent;
 use App\Models\PageImages;
@@ -13,6 +14,30 @@ class PageController extends ResponseController {
 
     public function __construct(Request $request) {
         parent::__construct($request);
+    }
+
+    protected function frontpage( Request $request ) {
+
+        if( !$request->has('row') ) return \App::abort(404);
+
+        $rowId = $request->get('row');
+
+        $fp = Frontpage::select('id', 'data','size','type')->where('row_id', $rowId)->orderBy('row_placement', 'ASC')->get();
+
+        if( count($fp) > 0 ) {
+
+            foreach($fp as $fpItem) {
+                $fpItem->tile = $fpItem->getDataFor( $fpItem->type, json_decode($fpItem->data) );
+            }
+
+            return $this->json([
+                'frontpages' => $fp
+            ]);
+
+        }
+
+        return \App::abort(404);
+
     }
 
     protected function getContent(Request $request, $slug) {

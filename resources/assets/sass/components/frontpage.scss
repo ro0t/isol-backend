@@ -27,6 +27,7 @@
             transition: background-color .2s linear;
             padding-bottom: $gutter * 2;
             position: relative;
+            vertical-align: top;
 
             &:after {
                 content: 'CLICK TO OPEN CONFIGURATION';
@@ -63,11 +64,26 @@
                 font-family: GraphikMd, sans-serif;
             }
 
-            &.smaller {
+            &.small {
                 width: 25%;
             }
 
             &.large {
+                width: 45%;
+            }
+
+            &.ui-sortable-placeholder {
+                background: rgba($brand-primary, .2);
+                border: 1px dashed $brand-secondary;
+                visibility: visible !important;
+                opacity: .2;
+            }
+
+            &.ui-sortable-placeholder.small {
+                width: 25%;
+            }
+
+            &.ui-sortable-placeholder.large {
                 width: 45%;
             }
 
@@ -82,7 +98,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 99999;
+    z-index: 100;
     display: none;
 
     .underlay {
@@ -135,6 +151,62 @@
 
                 &:hover {
                     background: darken($brand-danger, 5%);
+                }
+            }
+        }
+    }
+
+}
+
+.frontpage-slideshow {
+    margin-bottom: $gutter;
+
+    .input {
+        label, span {
+            display: block;
+        }
+
+        label {
+            color: #000;
+            font-family: GraphikMd, sans-serif;
+        }
+
+        span {
+            font-size: 12px;
+            font-style: italic;
+        }
+    }
+
+    .images {
+        img {
+            width: auto;
+            max-height: 70px;
+            background-size: contain;
+            display: inline-block;
+            margin: 5px;
+            vertical-align: top;
+        }
+    }
+
+    .add-image {
+        margin-top: $gutter / 2;
+        width: 36px;
+        height: 36px;
+        cursor: pointer;
+
+        svg {
+            width: 100%;
+            height: 100%;
+            background-size: 100%;
+
+            .add-circle-green {
+                fill: $brand-success;
+                @include transition;
+            }
+
+            &:hover {
+                .add-circle-green {
+                    fill: darken($brand-success, 6%);
                 }
             }
         }

@@ -13,6 +13,7 @@
 
 // Authentication specific routes
 Auth::routes();
+
 Route::get('logout', function() {
     Auth::logout();
     return redirect('/');
@@ -26,13 +27,16 @@ Route::group(['prefix' => 'pages'], function() {
 
     Route::get('edit/{id}', 'PageController@edit')->name('page.edit');
     Route::get('edit/special/{layout}', 'PageController@editSpecial')->name('page.edit.special');
-    Route::get('frontpage/edit', 'PageController@editFrontpage')->name('frontpage');
+    Route::get('frontpage/edit', 'FrontpageController@editFrontpage')->name('frontpage');
     Route::get('seo/{id}', 'PageController@seo')->name('page.seo');
     Route::get('deleteImage/{id}', 'PageController@deleteImage');
 
     Route::post('images/{id}', 'PageController@addImages')->name('page.images');
     Route::post('edit/{id}', 'PageController@change');
     Route::post('seo/{id}', 'PageController@changeSeo');
+    Route::post('frontpage/edit/{moduleId}', 'FrontpageController@updateModule');
+    Route::post('frontpage/order/{rowId}', 'FrontpageController@updateModulePositions');
+    Route::post('frontpage/slideshow/upload', 'FrontpageController@addImages')->name('frontpage.slideshow.upload');
 
 });
 

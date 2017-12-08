@@ -19,6 +19,8 @@ Route::get('products/{id}', 'Api\ProductController@detail');
 Route::get('categories', 'Api\CategoryController@categories');
 
 Route::get('manufacturers', 'Api\ManufacturerController@list');
+
+Route::get('frontpages', 'Api\PageController@frontpage');
 Route::get('pages/{slug}', 'Api\PageController@getContent');
 
 Route::get('employees', 'Api\EmployeeController@list');

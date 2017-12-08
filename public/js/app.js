@@ -34556,45 +34556,299 @@ module.exports = new Textarea();
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__jquery_ui_jquery_ui_js__ = __webpack_require__("./resources/assets/js/jquery-ui/jquery-ui.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__jquery_ui_jquery_ui_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__jquery_ui_jquery_ui_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_sweetalert2__ = __webpack_require__("./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_sweetalert2__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__frontpage_slideshow__ = __webpack_require__("./resources/assets/js/editor/frontpage.slideshow.js");
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 
 
+
+
+var ModuleType = {
+    MANUFACTURERS: 'MANUFACTURER',
+    NEWS: 'NEWS',
+    SLIDESHOW: 'SLIDESHOW'
+};
+
 var Frontpage = function () {
     function Frontpage() {
+        var _this = this;
+
         _classCallCheck(this, Frontpage);
 
-        $('.frontpage-sortable').sortable();
+        var self = this;
 
-        this.layout = {
-            first: { size: 'small', type: 'manufacturer', data: 'M:FACOM' },
-            second: { size: 'large', type: 'manufacturer', data: 'M:FESTOOL' },
-            third: { size: 'large', type: 'manufacturer', data: 'M:SPIT' },
-            fourth: { size: 'small', type: 'news', data: 'IGW:NEWS' }
-        };
+        $('.frontpage-sortable').sortable({
+            axis: 'x',
+            update: function update(event, ui) {
+                var data = $(this).sortable('serialize'),
+                    rowId = $(this).data('row-id');
 
-        $('.frontpage-sortable').find('.tile').click(this.changeTileType.bind(this));
-
-        $('.frontpage-type-editor .underlay').click(function () {
-            $('.frontpage-type-editor').hide();
+                axios.post('/pages/frontpage/order/' + rowId, data).then(function (res) {/* 😍 It worked 😍 */}).catch(function (e) {
+                    __WEBPACK_IMPORTED_MODULE_1_sweetalert2___default()('D@mn 😲', 'Couldn\'t save tile positions, please check console for debug logs.', 'error');
+                    console.error('Debug', e);
+                });
+            }
         });
 
-        $('.frontpage-type-editor .save').click(function () {
-            $('.frontpage-type-editor').hide();
+        this.currentWorkingId = 0;
+        this.currentWorkingType = null;
+        this.currentWorkingTile = null;
+        this.currentWorkingData = {};
+
+        this.editor = document.querySelector('.frontpage-type-editor');
+        this.underlay = this.editor.querySelector('.underlay');
+        this.cancel = this.editor.querySelector('.cancel');
+        this.save = this.editor.querySelector('.save');
+        this.options = this.editor.querySelector('.module-options');
+        this.selectType = this.editor.querySelector('select[name="type"]');
+
+        // Loop through tiles and set their event listener
+        var tiles = document.querySelectorAll('.frontpage-sortable .tile');
+        tiles.forEach(function (tile) {
+            tile.addEventListener('click', _this.openModal.bind(_this, tile));
         });
 
-        $('.frontpage-type-editor .cancel').click(function () {
-            $('.frontpage-type-editor').hide();
+        // If the user chooses a new type, load new options
+        this.selectType.addEventListener('change', function (e) {
+            _this.currentWorkingType = e.target.value;
+            _this.setupOptions();
         });
+
+        //
+        this.save.addEventListener('click', this.saveModule.bind(this));
+
+        // Closers
+        this.underlay.addEventListener('click', this.closeModal.bind(this));
+        this.cancel.addEventListener('click', this.closeModal.bind(this));
+
+        this.fps = new __WEBPACK_IMPORTED_MODULE_2__frontpage_slideshow__["a" /* default */]();
     }
 
     _createClass(Frontpage, [{
-        key: 'changeTileType',
-        value: function changeTileType() {
+        key: 'openModal',
+        value: function openModal(tile) {
 
-            $('.frontpage-type-editor').show();
+            this.currentWorkingTile = tile;
+            this.currentWorkingId = $(tile).data('id');
+            this.currentWorkingType = $(tile).data('type');
+            this.currentWorkingData = $(tile).data('tile');
+
+            // Set the select value to correct state and load possible options.
+            this.selectType.value = this.currentWorkingType;
+
+            this.setupOptions();
+        }
+    }, {
+        key: 'setupOptions',
+        value: function setupOptions() {
+            var _this2 = this;
+
+            // Clear the options field
+            this.options.innerHTML = '';
+
+            // Generic callback for the options loader
+            var callback = function callback(elems) {
+                _this2.options.appendChild(elems);
+                $(_this2.editor).show();
+            };
+
+            // Load the module options into the element.
+            switch (this.currentWorkingType) {
+                case ModuleType.MANUFACTURERS:
+                    {
+                        this.loadManufacturerOptions(this.currentWorkingData, callback);
+                        break;
+                    }
+
+                case ModuleType.NEWS:
+                    {
+                        this.loadNewsOptions(this.currentWorkingData, callback);
+                        break;
+                    }
+
+                case ModuleType.SLIDESHOW:
+                    {
+                        console.log('in');
+                        this.loadSlideshowOptions(this.currentWorkingData, callback);
+                        break;
+                    }
+            }
+        }
+    }, {
+        key: 'saveModule',
+        value: function saveModule() {
+
+            var moduleId = this.currentWorkingId;
+
+            switch (this.currentWorkingType) {
+                case ModuleType.MANUFACTURERS:
+                    {
+                        return this.manufacturerSave(moduleId);
+                    }
+
+                case ModuleType.NEWS:
+                    {
+                        return this.newsSave(moduleId);
+                    }
+
+                case ModuleType.SLIDESHOW:
+                    {
+                        return this.slideshowSave(moduleId);
+                    }
+            }
+        }
+    }, {
+        key: 'closeModal',
+        value: function closeModal() {
+            $(this.editor).hide();
+        }
+    }, {
+        key: 'loadManufacturerOptions',
+        value: function loadManufacturerOptions(data, callback) {
+            var _this3 = this;
+
+            var elems = document.createElement('div');
+
+            // Banner image uploader and possibility of selecting a manufacturer
+            var label = document.createElement('label');
+            label.className = 'select--label';
+            label.innerHTML = 'Select manufacturer';
+
+            var dSelect = document.createElement('div');
+            dSelect.className = 'select';
+
+            var select = document.createElement('select');
+            select.setAttribute('name', 'manufacturer_id');
+
+            elems.appendChild(label);
+            elems.appendChild(dSelect);
+
+            // Load manufacturers and put in the options
+            axios.get('/api/manufacturers').then(function (res) {
+
+                res.data.manufacturers.forEach(function (mf) {
+
+                    var option = document.createElement('option');
+                    option.setAttribute('value', mf.id);
+                    option.innerHTML = mf.name;
+
+                    select.appendChild(option);
+                });
+
+                select.value = data.manufacturer;
+                _this3.currentManufacturer = data.manufacturer;
+
+                select.addEventListener('change', _this3.updatedManufacturerSelection.bind(_this3, select));
+
+                dSelect.appendChild(select);
+                callback(elems);
+            }).catch(function (e) {
+                __WEBPACK_IMPORTED_MODULE_1_sweetalert2___default()('Ouch', 'Couldn\'t fetch manufacturers, please check console for debug logs.', 'error');
+                console.error('Debug', e);
+            });
+        }
+    }, {
+        key: 'updatedManufacturerSelection',
+        value: function updatedManufacturerSelection(select) {
+            this.currentManufacturer = select.value;
+        }
+    }, {
+        key: 'loadNewsOptions',
+        value: function loadNewsOptions(data, callback) {
+
+            // No need for additional data, this module will automatically load the last 5 articles on the server side.
+            var description = document.createElement('p');
+
+            description.style.textAlign = 'center';
+            description.style.fontSize = '14px';
+
+            description.innerHTML = 'Show latest 5 news posts';
+
+            callback(description);
+        }
+    }, {
+        key: 'loadSlideshowOptions',
+        value: function loadSlideshowOptions(data, callback) {
+            var _this4 = this;
+
+            var elems = document.createElement('div');
+            elems.className = 'frontpage-slideshow';
+
+            var input = document.createElement('div');
+            input.className = 'input';
+
+            input.innerHTML = '<label>Slideshow images</label><span class="input__description" style="max-width: 100%;">Click an image to remove the image.</span>';
+
+            var images = document.createElement('div');
+            images.className = 'images';
+
+            this.fps.imageContainer = images;
+
+            if (data.images !== undefined) {
+                // Add current images to the container, if data exists already.
+                this.fps.displayImages(data.images, true);
+            }
+
+            elems.appendChild(input);
+            elems.appendChild(images);
+
+            var addImage = document.createElement('div');
+            addImage.className = "add-image";
+            addImage.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" width="512px" height="512px" viewBox="0 0 510 510" style="enable-background:new 0 0 510 510;" xml:space="preserve"><g><g id="add-circle"><path class="add-circle-green" d="M255,0C114.75,0,0,114.75,0,255s114.75,255,255,255s255-114.75,255-255S395.25,0,255,0z M382.5,280.5h-102v102h-51v-102    h-102v-51h102v-102h51v102h102V280.5z" fill="#FFFFFF"/></g></g></svg>';
+
+            addImage.addEventListener('click', function () {
+                _this4.fps.openFileUpload();
+            });
+            elems.appendChild(addImage);
+
+            callback(elems);
+        }
+    }, {
+        key: 'manufacturerSave',
+        value: function manufacturerSave(id) {
+
+            var data = { type: ModuleType.MANUFACTURERS, data: '{"manufacturer":"' + this.currentManufacturer + '"}' };
+
+            this.saveRequest(id, data);
+        }
+    }, {
+        key: 'newsSave',
+        value: function newsSave(id) {
+
+            var data = { type: ModuleType.NEWS, data: '' };
+
+            this.saveRequest(id, data);
+        }
+    }, {
+        key: 'slideshowSave',
+        value: function slideshowSave(id) {
+
+            var data = { type: ModuleType.SLIDESHOW, data: JSON.stringify({ images: this.fps.getSaveJson() }) };
+
+            this.saveRequest(id, data);
+        }
+    }, {
+        key: 'saveRequest',
+        value: function saveRequest(id, data) {
+            var _this5 = this;
+
+            axios.post('/pages/frontpage/edit/' + id, data).then(function (res) {
+
+                // Update the current working tile data!
+                _this5.currentWorkingTile.querySelector('.frontpage-module-type').innerHTML = res.data.type;
+                _this5.currentWorkingTile.querySelector('.frontpage-module-data').innerHTML = res.data.moduleTitle;
+
+                _this5.closeModal();
+                window.location.reload();
+            }).catch(function (e) {
+
+                __WEBPACK_IMPORTED_MODULE_1_sweetalert2___default()('D@mn 😲', 'Couldn\'t save module, please check console for debug logs.', 'error');
+                console.error('Debug', e);
+            });
         }
     }]);
 
@@ -34602,6 +34856,134 @@ var Frontpage = function () {
 }();
 
 /* harmony default export */ __webpack_exports__["a"] = (Frontpage);
+
+/***/ }),
+
+/***/ "./resources/assets/js/editor/frontpage.slideshow.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2__ = __webpack_require__("./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_sweetalert2__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
+var FrontpageSlideshow = function () {
+    function FrontpageSlideshow() {
+        var _this = this;
+
+        _classCallCheck(this, FrontpageSlideshow);
+
+        this.fileInput = document.getElementById('frontpage-slideshow');
+        this.imageContainer = null;
+        this.fileInput.addEventListener('change', function (e) {
+            _this.fileInputChanged(e);
+        });
+    }
+
+    _createClass(FrontpageSlideshow, [{
+        key: 'openFileUpload',
+        value: function openFileUpload() {
+            this.fileInput.click();
+        }
+    }, {
+        key: 'displayImages',
+        value: function displayImages(images, sources) {
+            var _this2 = this;
+
+            images.forEach(function (i) {
+
+                var img = document.createElement('img');
+                img.setAttribute('src', sources === undefined ? i.image : i);
+
+                _this2.imageContainer.appendChild(img);
+
+                img.addEventListener('click', _this2.deleteImage.bind(_this2, img));
+            });
+        }
+    }, {
+        key: 'deleteImage',
+        value: function deleteImage(image) {
+
+            event.preventDefault();
+
+            __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()({
+                title: 'Are you sure?',
+                text: "Do you want to remove this image from the slideshow?",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#38465A',
+                cancelButtonColor: '#AC5252',
+                confirmButtonText: 'Delete!'
+            }).then(function (result) {
+
+                if (result.value) {
+                    image.remove();
+                }
+            });
+        }
+    }, {
+        key: 'getSaveJson',
+        value: function getSaveJson() {
+
+            var images = this.imageContainer.querySelectorAll('img');
+            var sources = [];
+
+            images.forEach(function (img) {
+                sources.push(img.getAttribute('src'));
+            });
+
+            return sources;
+        }
+    }, {
+        key: 'fileInputChanged',
+        value: function fileInputChanged(e) {
+            var _this3 = this;
+
+            var files = e.target.files;
+            var data = new FormData();
+
+            if (files.length > 5) {
+                return note.error('Max 5 images', 'You can only upload 5 images.');
+            }
+
+            if (!files.length) {
+                return;
+            }
+
+            for (var i = 0; i < files.length; i++) {
+
+                var file = files.item(i);
+                data.append('images[' + i + ']', file, file.name);
+            }
+
+            var config = {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                }
+            };
+
+            if (this.imageContainer == null) {
+                return note.error('No image container available, please refresh the page and try again.');
+            }
+
+            axios.post(e.target.getAttribute('data-url'), data, config).then(function (res) {
+
+                note.success('Image upload', res.data.message);
+                _this3.displayImages(res.data.images);
+            }).catch(function (error) {
+                note.error('Image upload error', error.response.data.message);
+            });
+        }
+    }]);
+
+    return FrontpageSlideshow;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (FrontpageSlideshow);
 
 /***/ }),
 

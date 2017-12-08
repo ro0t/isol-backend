@@ -8428,8 +8428,11 @@ strong {
   outline: 0;
   border: 0;
   background: url(/igw/madeBy.svg);
-  width: 129px;
-  height: 23px;
+  width: 100%;
+  height: 20px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
   margin: 50px auto 0 auto;
 }
 
@@ -9383,6 +9386,7 @@ label.select--label {
   transition: background-color .2s linear;
   padding-bottom: 50px;
   position: relative;
+  vertical-align: top;
 }
 
 .frontpage .frontpage-sortable li:after {
@@ -9421,11 +9425,26 @@ label.select--label {
   font-family: GraphikMd, sans-serif;
 }
 
-.frontpage .frontpage-sortable li.smaller {
+.frontpage .frontpage-sortable li.small {
   width: 25%;
 }
 
 .frontpage .frontpage-sortable li.large {
+  width: 45%;
+}
+
+.frontpage .frontpage-sortable li.ui-sortable-placeholder {
+  background: rgba(73, 125, 199, 0.2);
+  border: 1px dashed #38465A;
+  visibility: visible !important;
+  opacity: .2;
+}
+
+.frontpage .frontpage-sortable li.ui-sortable-placeholder.small {
+  width: 25%;
+}
+
+.frontpage .frontpage-sortable li.ui-sortable-placeholder.large {
   width: 45%;
 }
 
@@ -9435,7 +9454,7 @@ label.select--label {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 99999;
+  z-index: 100;
   display: none;
 }
 
@@ -9506,6 +9525,55 @@ label.select--label {
 
 .frontpage-type-editor .type-settings .type-actions .cancel:hover {
   background: #9b4a4a;
+}
+
+.frontpage-slideshow {
+  margin-bottom: 25px;
+}
+
+.frontpage-slideshow .input label,
+.frontpage-slideshow .input span {
+  display: block;
+}
+
+.frontpage-slideshow .input label {
+  color: #000;
+  font-family: GraphikMd, sans-serif;
+}
+
+.frontpage-slideshow .input span {
+  font-size: 12px;
+  font-style: italic;
+}
+
+.frontpage-slideshow .images img {
+  width: auto;
+  max-height: 70px;
+  background-size: contain;
+  display: inline-block;
+  margin: 5px;
+  vertical-align: top;
+}
+
+.frontpage-slideshow .add-image {
+  margin-top: 12.5px;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+}
+
+.frontpage-slideshow .add-image svg {
+  width: 100%;
+  height: 100%;
+  background-size: 100%;
+}
+
+.frontpage-slideshow .add-image svg .add-circle-green {
+  fill: #399E6A;
+}
+
+.frontpage-slideshow .add-image svg:hover .add-circle-green {
+  fill: #31885b;
 }
 
 @-webkit-keyframes fadeInUnderlay {

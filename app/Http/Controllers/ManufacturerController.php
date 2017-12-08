@@ -77,6 +77,17 @@ class ManufacturerController extends Controller {
 
             }
 
+            if( $request->hasFile('banner') ) {
+
+                $ext = $request->banner->extension();
+                $ext = ($ext == 'jpeg') ? 'jpg' : $ext;
+                $fileName = md5($request->banner->path() . time() . mt_rand()) . '.' . $ext;
+
+                $request->banner->storeAs('mf-images', $fileName);
+                $mf->banner = '/mf-images/' . $fileName;
+
+            }
+
             $mf->name = $request->get('name');
             $mf->slug = str_slug($request->get('name'));
             $mf->website = $request->get('website');
@@ -102,6 +113,7 @@ class ManufacturerController extends Controller {
         // }
 
         $image = null;
+        $banner = null;
 
         if( $request->hasFile('image') ) {
 
@@ -114,11 +126,23 @@ class ManufacturerController extends Controller {
 
         }
 
+        if( $request->hasFile('banner') ) {
+
+            $ext = $request->banner->extension();
+            $ext = ($ext == 'jpeg') ? 'jpg' : $ext;
+            $fileName = md5($request->banner->path() . time() . mt_rand()) . '.' . $ext;
+
+            $request->banner->storeAs('mf-images', $fileName);
+            $banner = '/mf-images/' . $fileName;
+
+        }
+
         $mf = Manufacturer::create([
             'name' => $request->get('name'),
             'slug' => str_slug($request->get('name')),
             'website' => $request->get('website'),
-            'image' => $image
+            'image' => $image,
+            'banner' => $banner
         ]);
 
         if( $mf ) {
