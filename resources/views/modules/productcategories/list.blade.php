@@ -5,6 +5,13 @@
     <div class="row">
         <div class="col-md-24" id="igw-table-actions">
             {!! fcreate('categories.new', 'New category') !!}
+
+            <div class="igw-table-action">
+                <a href="{{route('categories.orderMenu')}}" class="btn btn-create btn-toggle">
+                    <span>Order menu categories</span>
+                </a>
+            </div>
+
         </div>
         <div class="col-md-24">
             <table class="table table-hover">

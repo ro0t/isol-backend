@@ -75,9 +75,12 @@ class ProductCategory extends Model {
 
     }
 
-    protected function getMenuItems() {
+    protected function getMenuItems( $slugAsId = true ) {
 
-        return self::select('slug as id', 'name')->where('active', 1)->where('show_menu', 1)->get();
+        // The Ember website wants slug as id, but if you want the real id pass false into this function.
+        $type = $slugAsId ? 'slug as id' : 'id';
+
+        return self::select( $type , 'name')->where('active', 1)->where('show_menu', 1)->orderBy('order', 'ASC')->get();
 
     }
 

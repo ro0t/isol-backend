@@ -82,11 +82,13 @@ Route::group([ 'prefix' => 'categories' ], function() {
     Route::get('edit/{id}', 'ProductCategoryController@edit')->name('categories.edit');
     Route::get('delete/{id}', 'ProductCategoryController@delete')->name('categories.delete');
     Route::get('new', 'ProductCategoryController@create')->name('categories.new');
+    Route::get('order/menu', 'ProductCategoryController@orderMenuItems')->name('categories.orderMenu');
 
     Route::post('new', 'ProductCategoryController@createNew');
     Route::post('edit/{id}', 'ProductCategoryController@change');
     Route::post('showWebsite/{id}', 'ProductCategoryController@setWebsiteVisibility')->name('categories.setWebsiteVisibility');
     Route::post('showMenu/{id}', 'ProductCategoryController@setMenuVisibility')->name('categories.setMenuVisibility');
+    Route::post('order/menu', 'ProductCategoryController@orderMenuItemsPost');
 
 });
 

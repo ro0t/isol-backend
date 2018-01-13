@@ -47,6 +47,17 @@ class ProductCategoryController extends Controller {
 
     }
 
+    public function orderMenuItems() {
+
+        $this->breadcrumbs('Products', 'Categories', 'Order menu categories');
+
+        $menuItems = ProductCategory::getMenuItems(false);
+
+        return view('modules.productcategories.orderMenuItems')
+            ->with('menuItems', $menuItems);
+
+    }
+
     public function edit($id) {
 
         $pc = ProductCategory::find($id);
@@ -104,6 +115,33 @@ class ProductCategoryController extends Controller {
             $pc->save();
 
             return redirect()->route('categories')->with('success', 'Product category ' . $pc->name . ' has been saved!');
+
+        }
+
+        \App::abort(500);
+
+    }
+
+    public function orderMenuItemsPost(Request $request) {
+
+        if( $request->has('category') ) {
+
+            $category = $request->get('category');
+
+            if( is_array($category) ) {
+
+                $i = 0;
+
+                foreach($category as $categoryId) {
+                    $productCategory = ProductCategory::where('id', $categoryId)->update([
+                        'order' => $i++
+                    ]);
+                }
+
+                return response()->json([
+                    'message' => 'Category order has been saved.'
+                ]);
+            }
 
         }
 

@@ -19,6 +19,7 @@ import datalists from './components/datalist';
 import techInfo from './components/technical-information';
 import productImages from './components/product-images';
 import frontpage from './editor/frontpage';
+import orderMenuItems from './components/order-menu-items';
 
 class IGW {
 
@@ -40,6 +41,9 @@ class IGW {
         // Only used for frontpage Editor
         let requestingFrontpageEditor = document.querySelector('.frontpage-container[init="true"]');
         if( requestingFrontpageEditor) { new frontpage(); }
+
+        let requestingMenuOrdering = document.querySelector('.ordermenuitems-container[init="true"]');
+        if( requestingMenuOrdering ) { new orderMenuItems(); }
 
     }
 

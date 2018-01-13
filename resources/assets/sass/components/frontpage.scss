@@ -2,10 +2,10 @@
     margin: $gutter;
 }
 
-.frontpage {
+.frontpage, .ordermenuitems-container {
     margin-bottom: $gutter;
 
-    .frontpage-sortable {
+    .frontpage-sortable, .sortable-styled {
         @include clearfix;
         list-style-type: none;
         width: 90%;
@@ -89,6 +89,26 @@
 
         }
 
+    }
+
+    .sortable-styled {
+        width: 100%;
+        
+        li {
+            padding: 10px;
+            margin-top: 0;
+            margin-bottom: 10px;
+
+            &:after {
+                display: none;
+                content: '';
+            }
+
+            p {
+                font-size: 14px;
+                margin: 0;
+            }
+        }
     }
 }
 
