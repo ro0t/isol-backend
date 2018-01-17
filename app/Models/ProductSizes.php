@@ -6,6 +6,7 @@ class ProductSizes extends Model {
 
     protected $table = 'product_size';
     protected $guarded = [];
+    public $hidden = ['created_at', 'updated_at', 'id', 'product_id', 'active'];
 
     protected function clearSizes($productId) {
 
@@ -19,6 +20,12 @@ class ProductSizes extends Model {
             'product_id' => $productId,
             'size_description' => $sizeDetails
         ]);
+
+    }
+
+    protected function getSizesFor($productId) {
+
+        return self::where('product_id', $productId)->where('active', 1)->get();
 
     }
 

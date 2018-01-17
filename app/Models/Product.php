@@ -139,6 +139,7 @@ class Product extends Model {
 
         $images = ProductImages::getImagesFor($product->id, true);
         $techInfo = ProductInformation::getInformationFor($product->id);
+        $sizes = ProductSizes::getSizesFor($product->id);
 
         $images = $images->map(function($image) {
 
@@ -149,6 +150,7 @@ class Product extends Model {
 
         $product->images = $images;
         $product->technical_information = $techInfo;
+        $product->sizes = count($sizes) > 0 ? $sizes : [];
 
         // Clean up the JSON
         $this->hideValues($product);
