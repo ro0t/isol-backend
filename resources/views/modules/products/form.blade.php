@@ -46,9 +46,9 @@
                             </select>
                         </div>
 
-                        {!! ffile('safety_file', 'Security Document', $data, 'application/pdf') !!}
+                        {!! ffile('safety_file', 'Security Document (pdf file)', $data, 'application/pdf') !!}
 
-                        {!! ffile('technical_information_file', 'Technical Information', $data, 'application/pdf') !!}
+                        {!! ffile('technical_information_file', 'Technical Information (pdf file)', $data, 'application/pdf') !!}
 
                     </div>
                     <div class="col-md-8">
@@ -90,6 +90,12 @@
                                 </svg>
                             </div>
                         </div>
+
+                        {!! ffile('product_sizes', 'Product Sizes (csv file)', $data, 'text/csv') !!}
+
+                        @if($productSizeCount > 0)
+                        <a href="{{route('products.sizes.delete', $data->id)}}" class="delete">{{$productSizeCount}} sizes registered - click here to remove all</a>
+                        @endif
 
                     </div>
                     <div class="col-md-1"></div>

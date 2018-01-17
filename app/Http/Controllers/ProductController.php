@@ -9,6 +9,7 @@ use App\Models\ProductLine;
 use App\Models\ProductImages;
 use App\Models\ProductInformation;
 use App\Models\ProductCategory;
+use App\Models\ProductSizes;
 use App\Models\Manufacturer;
 
 define('MAX_UPLOAD_IMAGES', 5);
@@ -84,6 +85,7 @@ class ProductController extends Controller {
             $this->breadcrumbs('Products', $product->name, 'Edit');
         }
 
+        $sizes = ProductSizes::where('product_id', $product->id)->where('active', 1)->count();
         $images = ProductImages::getImagesFor($product->id);
         $technical = ProductInformation::getInformationFor($product->id);
 
@@ -92,7 +94,8 @@ class ProductController extends Controller {
             ->with('images', $images)
             ->with('manufacturers', $this->manufacturers)
             ->with('categories', $this->categories)
-            ->with('techInfo', $technical);
+            ->with('techInfo', $technical)
+            ->with('productSizeCount', $sizes);
 
     }
 
@@ -207,6 +210,12 @@ class ProductController extends Controller {
         $this->storeProductFile('technical_information_file', $product, $request);
         $this->storeProductFile('safety_file', $product, $request);
 
+        $prodSizes = $this->storeProductSizes('product_sizes', $product, $request);
+
+        if( !$prodSizes ) {
+            return redirect()->route('products.edit', $product->id)->with('error', 'There was something wrong with saving the product sizes, please try again.');
+        }
+
         return redirect()->route('products.edit', $product->id)->with('success', 'Product saved');
 
     }
@@ -290,6 +299,50 @@ class ProductController extends Controller {
                 $product->save();
             }
 
+        }
+
+    }
+
+    private function storeProductSizes( $field, $product, $request ) {
+
+        if( $request->hasFile($field) && $request->file($field)->isValid() ) {
+
+            // Temporary read the file values and insert into ProductSizes
+            if( ($handle = fopen($request->file($field)->getRealPath(), 'r')) !== false) {
+
+                // Clear the old product sizes
+                $this->removeProductSizes( $product->id, false );
+
+                while(($data = fgetcsv($handle, 1000, ";")) !== false) {
+
+                    if( isset($data[0]) && strlen($data[0]) > 0 ) {
+
+                        // Size should always be the first value
+                        $size = $data[0];
+
+                        ProductSizes::addSize($product->id, $size);
+
+                    }
+
+                }
+
+                fclose($handle);
+                return true;
+
+            }
+
+            return false;
+
+        }
+
+    }
+
+    public function removeProductSizes( $productId, $shouldRedirect = true ) {
+
+        ProductSizes::clearSizes($productId);
+
+        if( $shouldRedirect ) {
+            return redirect()->route('products.edit', $productId)->with('success', 'Product sizes removed');
         }
 
     }

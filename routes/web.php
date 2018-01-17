@@ -100,6 +100,7 @@ Route::group(['prefix' => 'product'], function() {
     Route::get('delete/{id}', 'ProductController@delete')->name('products.delete');
     Route::get('autosearch/navision', 'ProductController@navision')->name('products.autosearch.navision');
     Route::get('deleteImage/{id}', 'ProductController@deleteImage');
+    Route::get('deleteSizes/{id}', 'ProductController@removeProductSizes')->name('products.sizes.delete');
 
     Route::post('new', 'ProductController@createNew');
     Route::post('edit/{id}', 'ProductController@change');
