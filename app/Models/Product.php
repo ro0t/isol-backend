@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 
-define('PAGE_SIZE', 100);
+define('PAGE_SIZE', 350);
 
 class Product extends Model {
 
