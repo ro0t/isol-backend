@@ -22,8 +22,6 @@
 
                         {!! finput('model_number', 'Model number', fvalue($data, 'model_number')) !!}
 
-                        {!! finput('price', 'Price', fvalue($data, 'price')) !!}
-
                         <label class="select--label" for="manufacturer_id">Manufacturer</label>
                         <div class="select">
                             <select id="manufacturer_id" name="manufacturer_id" required>
