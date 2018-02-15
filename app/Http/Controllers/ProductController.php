@@ -274,6 +274,7 @@ class ProductController extends Controller {
         $product->product_category_id               = $request->get('product_category_id');
         $product->description                       = $request->get('description');
         $product->model_number                      = $request->get('model_number');
+        $product->price                             = $request->get('price');
         $product->active                            = 1;    // Published
 
         return $product->save();
