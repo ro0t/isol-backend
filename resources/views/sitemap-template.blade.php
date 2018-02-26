@@ -20,7 +20,7 @@
     @if($product->image != null)
     <image:image>
        <image:loc>{{url($product->image)}}</image:loc>
-       <image:caption>Dogs playing poker</image:caption>
+       <image:caption>{{$product->name}}</image:caption>
     </image:image>
     @endif
   </url>
