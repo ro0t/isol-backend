@@ -112,6 +112,13 @@ class Product extends Model {
 
     }
 
+    protected function sitemap() {
+
+        $ids = self::where('active', 1)->pluck('slug');
+        return $ids;
+
+    }
+
     protected function hideValues($product) {
 
         unset($product->active);

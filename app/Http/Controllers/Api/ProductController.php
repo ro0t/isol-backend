@@ -32,4 +32,11 @@ class ProductController extends ResponseController {
 
     }
 
+    public function sitemap() {
+
+      $response = Product::sitemap();
+      return $this->json($response);
+
+    }
+
 }

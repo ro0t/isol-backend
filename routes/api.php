@@ -30,3 +30,17 @@ Route::get('news/all', 'Api\NewsController@allNews');
 Route::get('news/{slug}', 'Api\NewsController@detail');
 
 Route::get('widgets', 'Api\PageController@getContentWidgets');
+
+
+/*
+|--------------------------------------------------------------------------
+| SEO Routes
+|--------------------------------------------------------------------------
+|
+| Seo routes called by the frontend website go here.
+|
+*/
+
+Route::get('products/sitemap', 'Api\ProductController@sitemap');
+
+Route::get('seos/{page}', 'Api\SearchEngineOptimization@metaData');
