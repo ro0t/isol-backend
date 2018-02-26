@@ -10,6 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('sitemap.xml', 'MiscController@generateSitemap');
 
 // Authentication specific routes
 Auth::routes();

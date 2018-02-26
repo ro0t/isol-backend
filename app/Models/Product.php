@@ -114,8 +114,15 @@ class Product extends Model {
 
     protected function sitemap() {
 
-        $ids = self::where('active', 1)->pluck('slug');
-        return $ids;
+        $products = self::select('product.manufacturer_id','product_images.image', 'product.slug', 'manufacturer.slug as mfslug')
+          ->where('product.active', 1)
+          ->join('manufacturer', 'product.manufacturer_id' , '=', 'manufacturer.id')
+          ->leftJoin('product_images', function($query) {
+              $query->on('product.id', '=', 'product_images.product_id')->where('main_image', 1);
+          })
+          ->get();
+
+        return $products;
 
     }
 
