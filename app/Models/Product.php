@@ -27,6 +27,8 @@ class Product extends Model {
         $products = self::select('product.id', 'product.model_number', 'product_images.image', 'product.slug', 'product.name', 'manufacturer.name as manufacturer', 'manufacturer.slug as manslug', 'manufacturer.id as manid', 'manufacturer.image as manimg')
                         ->where('product.active', 1);
 
+        $products = $products->orderBy('id', 'ASC');
+
         if( $searchQuery ) {
             $products->where(function($query) use($searchQuery) {
 
