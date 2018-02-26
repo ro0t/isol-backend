@@ -11,6 +11,7 @@ use App\Models\ProductInformation;
 use App\Models\ProductCategory;
 use App\Models\ProductSizes;
 use App\Models\Manufacturer;
+use Input;
 
 define('MAX_UPLOAD_IMAGES', 5);
 
@@ -335,6 +336,8 @@ class ProductController extends Controller {
             return false;
 
         }
+
+        return true;
 
     }
 
