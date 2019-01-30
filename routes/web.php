@@ -98,6 +98,7 @@ Route::group(['prefix' => 'product'], function() {
     Route::get('/', 'ProductController@index')->name('products');
     Route::get('new', 'ProductController@create')->name('products.new');
     Route::get('edit/{id}', 'ProductController@edit')->name('products.edit');
+    Route::get('sync/{id}', 'DynamicsController@singleSync')->name('products.sync');
     Route::get('delete/{id}', 'ProductController@delete')->name('products.delete');
     Route::get('autosearch/navision', 'ProductController@navision')->name('products.autosearch.navision');
     Route::get('deleteImage/{id}', 'ProductController@deleteImage');

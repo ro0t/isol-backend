@@ -84,6 +84,7 @@
                             </label>
                         </td>
                         <td align="right">
+                            <a href="{{route('products.sync', $product->id)}}">Sync price</a>
                             <a href="{{route('products.edit', $product->id)}}">Edit</a>
                             <a href="{{route('products.delete', $product->id)}}" class="delete">Delete</a>
                         </td>

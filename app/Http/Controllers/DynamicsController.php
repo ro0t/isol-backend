@@ -24,6 +24,26 @@ class DynamicsController extends Controller {
         );
     }
 
+    public function singleSync($id) {
+        $product = Product::select('id', 'navision_id', 'active')
+            ->whereNotNull('navision_id')
+            ->where('id', $id)
+            ->where('active', 1)
+            ->first();
+
+        if( $product ) {
+            $result = $this->syncPrices($product->navision_id);
+
+            if ($result) {
+                $this->mapResult($product, $result);
+            }
+
+            return redirect()->route('products');
+        } else {
+            return 'ERROR';
+        }
+    }
+
     public function sync() {
         $products = Product::select('id', 'navision_id', 'active')
             ->whereNotNull('navision_id')
