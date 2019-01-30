@@ -45,7 +45,7 @@ class ProductController extends Controller {
         $this->breadcrumbs('Products');
 
         $status = $request->has('status') && $request->get('status') != 0 ? $request->get('status') : 1;
-        $products = Product::where('active', $status);
+        $products = Product::where('active', $status)->with('navisionData');
 
         if( $request->has('product_category_id') && !empty($request->get('product_category_id')) ) {
             $products = $products->where('product_category_id', $request->get('product_category_id'));

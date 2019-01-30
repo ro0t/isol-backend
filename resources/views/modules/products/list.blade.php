@@ -62,6 +62,9 @@
                     <tr>
                         <td>Id</td>
                         <td>Product</td>
+                        <td>UnitCost</td>
+                        <td>UnitPrice</td>
+                        <td>UnitPriceVAT</td>
                         <td>Published?</td>
                         <td align="right">Actions</td>
                     </tr>
@@ -71,6 +74,9 @@
                     <tr>
                         <td>{{$product->navision_id}}</td>
                         <td>{{$product->name}}</td>
+                        <td>{{$product->navisionData ? formatPrice($product->navisionData->UnitCost) : 'N/A'}}</td>
+                        <td>{{$product->navisionData ? formatPrice($product->navisionData->UnitPrice) : 'N/A'}}</td>
+                        <td>{{$product->navisionData ? formatPrice($product->navisionData->UnitPricePerSalesUOMVAT) : 'N/A'}}</td>
                         <td>
                             <label class="switch">
                                 <input type="checkbox" data-url="{{route('products.setWebsiteVisibility', $product->id)}}" {!! isChecked($product->active == 1) !!}>

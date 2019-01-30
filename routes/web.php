@@ -115,6 +115,8 @@ Route::group(['prefix' => 'settings'], function() {
     Route::get('/', 'SettingsController@index')->name('settings');
     Route::post('/', 'SettingsController@save');
 
+    Route::get('dynamics-nav', 'DynamicsController@sync');
+
 });
 
 Route::group(['prefix' => 'manufacturers'], function() {

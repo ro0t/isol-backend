@@ -8,7 +8,6 @@ use DB;
 define('PAGE_SIZE', 350);
 
 class Product extends Model {
-
     protected $table = 'product';
     protected $guarded = ['id'];
 
@@ -204,6 +203,10 @@ class Product extends Model {
 
         return $related;
 
+    }
+
+    public function navisionData() {
+        return $this->hasOne('App\Models\ProductNavisionData', 'product_id');
     }
 
     public function manufacturer() {
