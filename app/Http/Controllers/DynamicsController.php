@@ -8,7 +8,6 @@ use App\Models\ProductNavisionData;
 
 class DynamicsController extends Controller {
     protected $client;
-
     private $startTime;
 
     public function __construct() {
@@ -24,6 +23,11 @@ class DynamicsController extends Controller {
         );
     }
 
+    public function fullSync() {
+        $this->breadcrumbs('Products', 'Sync prices');
+        return view('modules.products.sync');
+    }
+
     public function singleSync($id) {
         $product = Product::select('id', 'navision_id', 'active')
             ->whereNotNull('navision_id')
@@ -33,21 +37,21 @@ class DynamicsController extends Controller {
 
         if( $product ) {
             $result = $this->syncPrices($product->navision_id);
-
-            if ($result) {
-                $this->mapResult($product, $result);
-            }
-
-            return redirect()->route('products');
+            if ($result) { $this->mapResult($product, $result); }
+            return redirect()->route('products.edit', $product->id);
         } else {
-            return 'ERROR';
+            return \App::abort(500);
         }
     }
 
     public function sync() {
+        // Increase the timeout limit, this request may take some time.
+        set_time_limit(25*60);
+
         $products = Product::select('id', 'navision_id', 'active')
             ->whereNotNull('navision_id')
             ->where('active', 1)
+            ->where('last_nav_sync_date', '<', date('Y-m-d H:i:s', time() - (25 * 60)))
             ->get();
 
         $productCount = count($products);
@@ -58,6 +62,12 @@ class DynamicsController extends Controller {
 
             if ($result) {
                 $this->mapResult($product, $result);
+
+                // Update the time
+                $product->update([
+                    'last_nav_sync_date' => date('Y-m-d H:i:s', time())
+                ]);
+
                 $successfulResults++;
             }
         }

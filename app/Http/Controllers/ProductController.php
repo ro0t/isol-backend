@@ -41,7 +41,6 @@ class ProductController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request) {
-
         $this->breadcrumbs('Products');
 
         $status = $request->has('status') && $request->get('status') != 0 ? $request->get('status') : 1;
@@ -76,7 +75,10 @@ class ProductController extends Controller {
 
     public function edit($id) {
 
-        $product = Product::find($id);
+        $product = Product::with('navisionData')
+            ->where('id', $id)
+            ->where('active', 1)
+            ->first();
 
         if(!$product) \App::abort(404);
 

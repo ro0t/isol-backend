@@ -20,6 +20,7 @@ import techInfo from './components/technical-information';
 import productImages from './components/product-images';
 import frontpage from './editor/frontpage';
 import orderMenuItems from './components/order-menu-items';
+import NavisionSync from './components/NavisionSync';
 
 class IGW {
 
@@ -34,6 +35,7 @@ class IGW {
         links.activate();
         datalists.activate();
         techInfo.activate();
+        NavisionSync.activate();
 
         let pi = new productImages();
         pi.activate();

@@ -22,7 +22,16 @@
 
                         {!! finput('model_number', 'Model number', fvalue($data, 'model_number')) !!}
 
-                        {!! finput('price', 'Price', fvalue($data, 'price')) !!}
+                        <div class="input">
+                            <label>Unit Prices</label>
+                            <p>Unit Cost: {{ $data->navisionData ? formatPrice($data->navisionData->UnitCost) : 'N/A' }}</p>
+                            <p>Unit Price: {{ $data->navisionData ? formatPrice($data->navisionData->UnitPrice) : 'N/A' }}</p>
+                            <p>Unit Price VAT: {{ $data->navisionData ? formatPrice($data->navisionData->UnitPricePerSalesUOMVAT) : 'N/A' }}</p>
+                            <a href="{{route('products.sync', $data->id)}}" onclick="return confirm('Are you sure you want to sync now? All current changes will be lost.')">
+                                Sync prices
+                            </a>
+                        </div>
+
 
                         <label class="select--label" for="manufacturer_id">Manufacturer</label>
                         <div class="select">

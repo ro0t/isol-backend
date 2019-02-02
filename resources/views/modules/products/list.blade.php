@@ -17,6 +17,11 @@
                         @endif
                     </a>
                 </div>
+                <div class="igw-table-action">
+                    <a href="{{route('products.sync.all')}}" class="btn btn-create btn-toggle">
+                        Sync prices
+                    </a>
+                </div>
             </div>
 
             <div class="right-side">

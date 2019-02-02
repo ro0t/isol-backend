@@ -4215,7 +4215,7 @@ if ( true ) {
 /*!
  * Determine if an object is a Buffer
  *
- * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
+ * @author   Feross Aboukhadijeh <https://feross.org>
  * @license  MIT
  */
 
@@ -33728,6 +33728,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_product_images__ = __webpack_require__("./resources/assets/js/components/product-images.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__editor_frontpage__ = __webpack_require__("./resources/assets/js/editor/frontpage.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_order_menu_items__ = __webpack_require__("./resources/assets/js/components/order-menu-items.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_NavisionSync__ = __webpack_require__("./resources/assets/js/components/NavisionSync.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_NavisionSync___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14__components_NavisionSync__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -33737,6 +33739,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
+
 
 
 
@@ -33772,6 +33775,7 @@ var IGW = function () {
             __WEBPACK_IMPORTED_MODULE_8__components_links___default.a.activate();
             __WEBPACK_IMPORTED_MODULE_9__components_datalist___default.a.activate();
             __WEBPACK_IMPORTED_MODULE_10__components_technical_information___default.a.activate();
+            __WEBPACK_IMPORTED_MODULE_14__components_NavisionSync___default.a.activate();
 
             var pi = new __WEBPACK_IMPORTED_MODULE_11__components_product_images__["a" /* default */]();
             pi.activate();
@@ -33854,6 +33858,66 @@ if (token) {
 //     broadcaster: 'pusher',
 //     key: 'your-pusher-key'
 // });
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/NavisionSync.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var classie = __webpack_require__("./node_modules/desandro-classie/classie.js");
+
+var NavisionSync = function () {
+    function NavisionSync() {
+        _classCallCheck(this, NavisionSync);
+    }
+
+    _createClass(NavisionSync, [{
+        key: 'activate',
+        value: function activate() {
+            var _this = this;
+
+            this.syncer = document.getElementById('productSync');
+            if (this.syncer) {
+                this.syncButton = this.syncer.querySelector('button');
+
+                this.syncButton.addEventListener('click', function () {
+                    _this.runSync();
+                });
+            }
+        }
+    }, {
+        key: 'runSync',
+        value: function runSync() {
+            var _this2 = this;
+
+            classie.add(this.syncer, 'syncing');
+
+            axios.post('/settings/dynamics-nav', null, {
+                timeout: 25 * 60 * 1000 // 25 minutes
+            }).then(function (res) {
+                classie.remove(_this2.syncer, 'syncing');
+                classie.add(_this2.syncer, 'finished');
+
+                var elem = document.getElementById('sync-finished');
+                if (elem) {
+                    elem.innerText = res.data;
+                }
+            }).catch(function (e) {
+                classie.remove(_this2.syncer, 'syncing');
+                alert('Finished with errors.');
+                console.error(e);
+            });
+        }
+    }]);
+
+    return NavisionSync;
+}();
+
+module.exports = new NavisionSync();
 
 /***/ }),
 

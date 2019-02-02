@@ -98,11 +98,14 @@ Route::group(['prefix' => 'product'], function() {
     Route::get('/', 'ProductController@index')->name('products');
     Route::get('new', 'ProductController@create')->name('products.new');
     Route::get('edit/{id}', 'ProductController@edit')->name('products.edit');
-    Route::get('sync/{id}', 'DynamicsController@singleSync')->name('products.sync');
+
     Route::get('delete/{id}', 'ProductController@delete')->name('products.delete');
     Route::get('autosearch/navision', 'ProductController@navision')->name('products.autosearch.navision');
     Route::get('deleteImage/{id}', 'ProductController@deleteImage');
     Route::get('deleteSizes/{id}', 'ProductController@removeProductSizes')->name('products.sizes.delete');
+
+    Route::get('sync/all-products', 'DynamicsController@fullSync')->name('products.sync.all');
+    Route::get('sync/{id}', 'DynamicsController@singleSync')->name('products.sync');
 
     Route::post('new', 'ProductController@createNew');
     Route::post('edit/{id}', 'ProductController@change');
@@ -112,12 +115,9 @@ Route::group(['prefix' => 'product'], function() {
 });
 
 Route::group(['prefix' => 'settings'], function() {
-
     Route::get('/', 'SettingsController@index')->name('settings');
     Route::post('/', 'SettingsController@save');
-
-    Route::get('dynamics-nav', 'DynamicsController@sync');
-
+    Route::post('dynamics-nav', 'DynamicsController@sync');
 });
 
 Route::group(['prefix' => 'manufacturers'], function() {

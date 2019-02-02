@@ -142,6 +142,9 @@ if( !function_exists('ferrors') ) {
 if( !function_exists('formatPrice') ) {
 
     function formatPrice( $price ) {
+        if( $price == null ) {
+            return 'N/A';
+        }
 
         return number_format($price, 0, ',', '.') . ' kr.';
 
