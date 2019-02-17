@@ -1,5 +1,6 @@
 <?php namespace App\Models;
 
+use \DB;
 use Illuminate\Database\Eloquent\Model;
 
 class ProductCategory extends Model {
@@ -12,62 +13,54 @@ class ProductCategory extends Model {
 
     protected function getParents() {
 
-        return self::where('active', 1)->whereNull('parent')->orderBy('id', 'ASC')->get();
+        return self::where('active', 1)
+            ->where('parent', 0)
+            ->orderBy('id', 'ASC')
+            ->get();
 
     }
 
-    protected function getParentsAndChildren() {
+    protected function getParentsAndChildren($id = 0) {
 
-        $parents = self::getParents();
+        $categories = DB::select('CALL getProductCategories(?)', [$id]);
+        $results = collect($categories);
 
-        foreach($parents as $parent) {
-
-            // Find and return all the children of each parent
-            $parent->children = self::where('parent', $parent->id)->where('active', 1)->orderBy('name', 'ASC')->get();
-
+        foreach($results as $ancestor) {
+            $ancestor->children = $ancestor->childCount > 0 ?
+                $this->getParentsAndChildren($ancestor->id)
+                : [];
         }
 
-        return $parents;
+        return $results;
 
     }
 
-    protected function getChildren( $parentSlug ) {
+    protected function getChildren( $parentId ) {
+        $children = self::where('parent', $parentId)
+            ->where('active', 1)
+            ->orderBy('order', 'ASC')
+            ->get();
 
-        $parent = self::where('slug', $parentSlug )->where('active', 1)->first();
-
-        if( $parent ) {
-
-            $children = self::where('parent', $parent->id)->where('active', 1)->orderBy('name', 'ASC')->get();
-
-            $children->map(function($child) {
-
-                if( $child->image != null ) {
-                    $child->hasImage = 'yes';
-                    $child->image = asset($child->image);
-                } else {
-                    $child->hasImage = '';
-                }
-
-                return $child;
-
-            });
-
-            return $children;
-
-        }
-
-        return null;
-
+        return $children;
     }
 
     protected function getWebsiteItems() {
 
-        $parents = self::select('id', 'name')->where('active', 1)->whereNull('parent')->where('show_website', 1)->get();
+        $parents = self::select('id', 'name')
+            ->where('active', 1)
+            ->where('parent', 0)
+            ->where('show_website', 1)
+            ->get();
 
         foreach($parents as $parent) {
 
             // Find and return all the children of each parent
-            $parent->children = self::select('id', 'name')->where('parent', $parent->id)->where('show_website', 1)->where('active', 1)->orderBy('name', 'ASC')->get();
+            $parent->children = self::select('id', 'name')
+                ->where('parent', $parent->id)
+                ->where('show_website', 1)
+                ->where('active', 1)
+                ->orderBy('name', 'ASC')
+                ->get();
 
         }
 

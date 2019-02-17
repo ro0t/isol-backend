@@ -80,10 +80,12 @@ Route::group(['prefix' => 'users'], function() {
 Route::group([ 'prefix' => 'categories' ], function() {
 
     Route::get('/', 'ProductCategoryController@index')->name('categories');
+    Route::get('depth/{categoryId}', 'ProductCategoryController@indexWithDepth')->name('categories.depth');
+    Route::get('order/menu/{parentId}', 'ProductCategoryController@orderMenuItems')->name('categories.orderMenu');
+
     Route::get('edit/{id}', 'ProductCategoryController@edit')->name('categories.edit');
     Route::get('delete/{id}', 'ProductCategoryController@delete')->name('categories.delete');
     Route::get('new', 'ProductCategoryController@create')->name('categories.new');
-    Route::get('order/menu', 'ProductCategoryController@orderMenuItems')->name('categories.orderMenu');
 
     Route::post('new', 'ProductCategoryController@createNew');
     Route::post('edit/{id}', 'ProductCategoryController@change');

@@ -9,6 +9,17 @@
     }
     > tbody {
         > tr {
+            &.parent {
+                td {
+                    padding-top: $gutter / 1.6;
+                    padding-bottom: $gutter / 1.6;
+
+                    &:first-child {
+                        font-weight: bold;
+                    }
+                }
+            }
+
             td {
                 vertical-align: middle;
 

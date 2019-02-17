@@ -26,32 +26,43 @@ class ProductCategoryController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index($id = 0) {
 
         $this->breadcrumbs('Products', 'Categories');
 
-        $data = ProductCategory::getParentsAndChildren();
+        if( $id > 0 ) {
+            $pc = ProductCategory::find($id);
+
+            if( !$pc || !$pc->active ) {
+                return \App::abort(404);
+            }
+
+            $this->breadcrumbs('Products', 'Categories', $pc->name);
+        }
+
+        $data = ProductCategory::getParentsAndChildren($id);
 
         return view('modules.productcategories.list')
+            ->with('depthId', $id)
             ->with('data', $data);
     }
 
-    public function create() {
+    public function indexWithDepth($categoryId) {
+        return self::index($categoryId);
+    }
 
+    public function create() {
         $this->breadcrumbs('Products', 'Categories', 'Create');
-        $parents = ProductCategory::getParents();
+        $parents = ProductCategory::getParentsAndChildren(0);
 
         return view('modules.productcategories.form')
             ->with('parents', $parents)
             ->with('data', null);
-
     }
 
-    public function orderMenuItems() {
-
+    public function orderMenuItems($id = 0) {
         $this->breadcrumbs('Products', 'Categories', 'Order menu categories');
-
-        $menuItems = ProductCategory::getMenuItems(false);
+        $menuItems = ProductCategory::getChildren($id);
 
         return view('modules.productcategories.orderMenuItems')
             ->with('menuItems', $menuItems);
@@ -65,7 +76,7 @@ class ProductCategoryController extends Controller {
         if($pc != null) {
 
             $this->breadcrumbs('Products', 'Categories', $pc->name);
-            $parents = ProductCategory::getParents();
+            $parents = ProductCategory::getParentsAndChildren(0);
 
             return view('modules.productcategories.form')
                 ->with('parents', $parents)
@@ -82,15 +93,17 @@ class ProductCategoryController extends Controller {
         $pc = ProductCategory::find($id);
 
         if( $pc != null ) {
-
             $pc->active = 0;
             $pc->save();
 
-            return redirect()->route('categories')->with('success', 'Product category ' . $pc->name . ' has been deleted!');
-
+            return redirect()
+                ->route('categories')
+                ->with('success', 'Product category ' . $pc->name . ' has been deleted!');
         }
 
-        return redirect()->route('categories')->with('error', 'Could not find product category with this id');
+        return redirect()
+            ->route('categories')
+            ->with('error', 'Could not find product category with this id');
 
     }
 
@@ -111,10 +124,19 @@ class ProductCategoryController extends Controller {
 
             $pc->name = $request->get('name');
             $pc->slug = str_slug($request->get('name'));
-            $pc->parent = $request->get('parent');
+
+            $newParent = $request->get('parent');
+
+            // Cannot set itself to parent.
+            if($newParent != $id) {
+                $pc->parent = $request->get('parent');
+            }
+
             $pc->save();
 
-            return redirect()->route('categories')->with('success', 'Product category ' . $pc->name . ' has been saved!');
+            return redirect()
+                ->route('categories')
+                ->with('success', 'Product category ' . $pc->name . ' has been saved!');
 
         }
 
@@ -123,13 +145,10 @@ class ProductCategoryController extends Controller {
     }
 
     public function orderMenuItemsPost(Request $request) {
-
         if( $request->has('category') ) {
-
             $category = $request->get('category');
 
             if( is_array($category) ) {
-
                 $i = 0;
 
                 foreach($category as $categoryId) {
@@ -142,11 +161,8 @@ class ProductCategoryController extends Controller {
                     'message' => 'Category order has been saved.'
                 ]);
             }
-
         }
-
         \App::abort(500);
-
     }
 
     public function createNew(Request $request) {

@@ -12,9 +12,17 @@
                 <label class="select--label" for="parent">Parent category</label>
                 <div class="select">
                     <select id="parent" name="parent">
-                        <option value="">No parent category</option>
+                        <option value="0">No parent category</option>
                         @foreach($parents as $parent)
-                        <option value="{{$parent->id}}" {!! fselectvalue($parent->id, $data, 'parent') !!}>{{$parent->name}}</option>
+                            <option value="{{$parent->id}}" {!! fselectvalue($parent->id, $data, 'parent') !!}>{{$parent->name}}</option>
+                            @if($parent->childCount > 0)
+                                <optgroup label="Children of {{$parent->name}}">
+                                    @foreach($parent->children as $child)
+                                        <option value="{{$child->id}}" {!! fselectvalue($child->id, $data, 'parent') !!}>{{$child->name}}</option>
+                                    @endforeach
+                                </optgroup>
+                                <option value="" disabled> </option>
+                            @endif
                         @endforeach
                     </select>
                 </div>

@@ -8746,6 +8746,15 @@ aside#igw-sidebar:hover a span {
   color: #000;
 }
 
+.table > tbody > tr.parent td {
+  padding-top: 15.625px;
+  padding-bottom: 15.625px;
+}
+
+.table > tbody > tr.parent td:first-child {
+  font-weight: bold;
+}
+
 .table > tbody > tr td {
   vertical-align: middle;
 }
