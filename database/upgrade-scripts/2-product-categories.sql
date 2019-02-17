@@ -5,7 +5,7 @@ DELIMITER //
 CREATE PROCEDURE getProductCategories
   (IN pcId INT(11))
   BEGIN
-    select p.id, p.name, p.parent, p.active, p.slug, p.order, (select count(pc.id) from product_category as pc where pc.active = 1 and pc.parent = p.id) as childCount
+    select p.id, p.image, p.name, p.parent, p.active, p.slug, p.order, (select count(pc.id) from product_category as pc where pc.active = 1 and pc.parent = p.id) as childCount
     from product_category as p
     where p.active = 1 and p.parent = pcId
     order by p.order asc;

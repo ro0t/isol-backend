@@ -22,7 +22,7 @@ class ProductCategory extends Model {
 
     protected function getParentsAndChildren($id = 0) {
 
-        $categories = DB::select('CALL getProductCategories(?)', [$id]);
+        $categories = DB::select('CALL getProductCategories(?);', [$id]);
         $results = collect($categories);
 
         foreach($results as $ancestor) {

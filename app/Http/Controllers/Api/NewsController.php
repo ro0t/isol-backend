@@ -14,7 +14,11 @@ class NewsController extends ResponseController {
 
     protected function latestNews(Request $request) {
 
-        $news = News::select('id', 'slug', 'title', 'content', 'image', 'created_at')->where('active', 1)->orderBy('id', 'desc')->limit(4)->get();
+        $news = News::select('id', 'slug', 'title', 'content', 'image', 'created_at')
+            ->where('active', 1)
+            ->orderBy('id', 'desc')
+            ->limit(4)
+            ->get();
 
         $news = $news->map(function($item, $key) {
 

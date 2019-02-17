@@ -40,7 +40,5 @@ Route::get('widgets', 'Api\PageController@getContentWidgets');
 | Seo routes called by the frontend website go here.
 |
 */
-
 Route::get('products/sitemap', 'Api\ProductController@sitemap');
-
 Route::get('seos/{page}', 'Api\SearchEngineOptimization@metaData');

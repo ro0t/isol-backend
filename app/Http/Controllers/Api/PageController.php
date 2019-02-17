@@ -9,6 +9,7 @@ use App\Models\Page;
 use App\Models\PageContent;
 use App\Models\PageImages;
 use App\Models\Settings;
+use App\Models\ProductCategory;
 
 class PageController extends ResponseController {
 
@@ -67,11 +68,13 @@ class PageController extends ResponseController {
 
     protected function getContentWidgets() {
 
+        $menu           = ProductCategory::getParentsAndChildren(0);
         $oh             = Settings::getContent('opening-hours');
         $footer         = Settings::getContent('footer');
         $en             = Settings::getContent('emergency-number');
 
         return $this->json([
+            'menu' => $menu,
             'widgets' => [
                 'id' => 'WIDGETS',
                 'openingHours'             => $oh,
