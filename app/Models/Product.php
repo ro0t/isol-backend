@@ -132,6 +132,9 @@ class Product extends Model {
         unset($product->active);
         unset($product->created_at);
         unset($product->updated_at);
+        if(isset($product->navisionData)) {
+            unset($product->navisionData);
+        }
 
     }
 
@@ -140,6 +143,7 @@ class Product extends Model {
         // Return single product + related related products
         $product = self::where('slug', $id)
             ->with('manufacturer')
+            ->with('navisionData')
             ->first();
 
         if( !$product ) \App::abort(404);
@@ -166,6 +170,11 @@ class Product extends Model {
         $product->images = $images;
         $product->technical_information = $techInfo;
         $product->sizes = count($sizes) > 0 ? $sizes : [];
+
+        if( $product->navisionData ) {
+            $product->price =
+                number_format($product->navisionData->UnitPricePerSalesUOMVAT, 0, '.', '.') . ' kr.';
+        }
 
         // Clean up the JSON
         $this->hideValues($product);
