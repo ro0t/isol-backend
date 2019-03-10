@@ -35,6 +35,20 @@ class ProductCategory extends Model {
 
     }
 
+    protected function getParentsAndChildrenIds($id) {
+        $ids = [];
+        $results = self::getParentsAndChildren($id);
+
+        foreach( $results as $category ) {
+            $ids[] = $category->id;
+            foreach( $category->children as $child ) {
+                $ids[] = $child->id;
+            }
+        }
+
+        return $ids;
+    }
+
     protected function getChildren( $parentId ) {
         $children = self::where('parent', $parentId)
             ->where('active', 1)

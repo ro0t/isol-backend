@@ -13,8 +13,11 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('products', 'Api\ProductController@list');
+Route::post('products', 'Api\ProductController@getList');
 Route::get('products/{id}', 'Api\ProductController@detail');
+
+// Deprecated
+Route::get('products', 'Api\ProductController@list');
 
 Route::get('categories', 'Api\CategoryController@categories');
 

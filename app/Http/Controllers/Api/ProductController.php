@@ -13,7 +13,21 @@ class ProductController extends ResponseController {
         parent::__construct($request);
     }
 
+    /**
+     * @deprecated
+     */
     protected function list(Request $request) {
+
+        $response = Product::products($request, 'model_number', true);
+
+        return $this->json([
+            'products' => $response->products,
+            'meta' => $response->metas
+        ]);
+
+    }
+
+    protected function getList(Request $request) {
 
         $response = Product::products($request, 'model_number', true);
 

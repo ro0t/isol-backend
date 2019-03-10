@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use DB;
 
 define('PAGE_SIZE', 350);
@@ -14,12 +15,35 @@ class Product extends Model {
     private $metas = [];
     private $manufacturerMetas = [];
 
-    protected function products( $request, $sortBy = false, $includeMetas = false ) {
+    private function getCategoryPossibilities( Request $request ) {
+        $ids = [];
+
+        if( $request->has('child') ) {
+            // Third, final level.
+            $category = $request->get('child');
+            $productCategory = ProductCategory::where('slug', $category)->pluck('id');
+            $ids[] = $productCategory[0];
+        } else if ( $request->has('subcategory') ) {
+            // Second level, can have children
+            $category = $request->get('subcategory');
+            $productCategory = ProductCategory::where('slug', $category)->pluck('id');
+            $ids = ProductCategory::getParentsAndChildrenIds($productCategory[0]);
+        } else if( $request->has('category') ) {
+            // Top level, most likely has children
+            $category = $request->get('category');
+            $productCategory = ProductCategory::where('slug', $category)->pluck('id');
+            $ids = ProductCategory::getParentsAndChildrenIds($productCategory[0]);
+        }
+
+        return count($ids) > 0 ? $ids : false;
+    }
+
+    protected function products( Request $request, $sortBy = false, $includeMetas = false ) {
 
         $response = new \stdClass();
 
         $page = $request->has('page') ? $request->get('page') : 1;
-        $category = $request->has('category') ? $request->get('category') : null;
+        $category = $this->getCategoryPossibilities($request);
         $manufacturer = $request->has('manufacturer') ? $request->get('manufacturer') : null;
         $searchQuery = $request->has('q') ? $request->get('q') : null;
 
@@ -48,7 +72,7 @@ class Product extends Model {
                     ->limit(PAGE_SIZE, $page);
 
         if( $category ) {
-            $products->where('product_category_id', $category);
+            $products->whereIn('product_category_id', $category);
         }
 
         if( $manufacturer ) {
