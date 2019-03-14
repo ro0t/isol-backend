@@ -112,6 +112,7 @@ Route::group(['prefix' => 'product'], function() {
     Route::post('new', 'ProductController@createNew');
     Route::post('edit/{id}', 'ProductController@change');
     Route::post('showWebsite/{id}', 'ProductController@setWebsiteVisibility')->name('products.setWebsiteVisibility');
+    Route::post('showPrice/{id}', 'ProductController@setShowPrice')->name('products.setShowPrice');
     Route::post('images/{id}', 'ProductController@addImages')->name('products.images');
     Route::post('setMainImage/{id}', 'ProductController@setMainImage');
 });

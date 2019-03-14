@@ -195,8 +195,8 @@ class Product extends Model {
         $product->technical_information = $techInfo;
         $product->sizes = count($sizes) > 0 ? $sizes : [];
 
-        if( $product->navisionData ) {
-            $product->price =
+        if( $product->price && $product->navisionData ) {
+            $product->displayPrice =
                 number_format($product->navisionData->UnitPricePerSalesUOMVAT, 0, '.', '.') . ' kr.';
         }
 

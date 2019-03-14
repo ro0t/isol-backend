@@ -198,6 +198,23 @@ class ProductController extends Controller {
 
     }
 
+    public function setShowPrice($id) {
+
+        $product = Product::find($id);
+
+        if($product != null) {
+
+            $product->price = $product->price == 1 ? 0 : 1;
+            $product->save();
+
+            return $this->success('Product was saved');
+
+        }
+
+        return $this->error('Product could not be updated, please refresh your page.');
+
+    }
+
     public function change(Request $request, $id) {
 
         $this->validator($request);
