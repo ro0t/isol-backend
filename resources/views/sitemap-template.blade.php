@@ -14,7 +14,7 @@
   @endforeach
   @foreach($products as $product)
   <url>
-    <loc>https://isol.is/vorur/{{$product->mfslug}}/{{$product->slug}}</loc>
+    <loc>https://isol.is/vara/{{$product->slug}}</loc>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
     @if($product->image != null)
