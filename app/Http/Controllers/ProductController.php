@@ -215,6 +215,23 @@ class ProductController extends Controller {
 
     }
 
+    public function setFeaturedProduct($id) {
+
+        $product = Product::find($id);
+
+        if($product != null) {
+
+            $product->featured = $product->featured == 1 ? 0 : 1;
+            $product->save();
+
+            return $this->success('Product is featured');
+
+        }
+
+        return $this->error('Product could not be updated, please refresh your page.');
+
+    }
+
     public function change(Request $request, $id) {
 
         $this->validator($request);

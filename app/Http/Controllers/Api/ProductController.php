@@ -27,6 +27,16 @@ class ProductController extends ResponseController {
 
     }
 
+    protected function featuredProducts(Request $request) {
+
+        $products = Product::featuredProducts();
+
+        return $this->json([
+            'products' => $products
+        ]);
+
+    }
+
     protected function getList(Request $request) {
 
         $response = Product::products($request, 'model_number', true);

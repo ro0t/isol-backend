@@ -18,6 +18,7 @@ Route::get('products/{id}', 'Api\ProductController@detail');
 
 // Deprecated
 Route::get('products', 'Api\ProductController@list');
+Route::get('featured-products', 'Api\ProductController@featuredProducts');
 
 Route::get('categories', 'Api\CategoryController@categories');
 

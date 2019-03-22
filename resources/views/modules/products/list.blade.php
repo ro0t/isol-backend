@@ -70,6 +70,7 @@
                         <td>UnitPrice</td>
                         <td>UnitPriceVAT</td>
                         <td>Show price?</td>
+                        <td>Featured?</td>
                         <td>Published?</td>
                         <td align="right">Actions</td>
                     </tr>
@@ -84,6 +85,12 @@
                         <td>
                             <label class="switch">
                                 <input type="checkbox" data-url="{{route('products.setShowPrice', $product->id)}}" {!! isChecked($product->price) !!}>
+                                <span class="slider round"></span>
+                            </label>
+                        </td>
+                        <td>
+                            <label class="switch">
+                                <input type="checkbox" data-url="{{route('products.setFeatured', $product->id)}}" {!! isChecked($product->featured == 1) !!}>
                                 <span class="slider round"></span>
                             </label>
                         </td>

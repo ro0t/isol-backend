@@ -1,0 +1,1 @@
+ALTER TABLE product ADD featured tinyint(1) DEFAULT 0 NULL;

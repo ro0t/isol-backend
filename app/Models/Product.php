@@ -37,6 +37,37 @@ class Product extends Model {
 
     }
 
+    protected function featuredProducts() {
+
+        $products = self::select('product.slug', 'product.name', 'product_images.image', 'product.manufacturer_id', 'manufacturer.name')
+            ->where('product.featured', 1)
+            ->where('product.active', 1)
+            ->inRandomOrder();
+
+        $products->join('manufacturer', 'product.manufacturer_id', '=', 'manufacturer.id')
+            ->leftJoin('product_images', function($query) {
+                $query->on('product.id', '=', 'product_images.product_id')->where('main_image', 1);
+            })
+            ->limit(4);
+
+        $products->get();
+
+        $products = $products->get();
+
+        $products = $products->map(function($product) {
+
+            // URLify the image so we can display it on the requesting website.
+            if ($product->image != null) {
+                $product->image = url($product->image);
+            }
+
+            return $product;
+        });
+
+        return $products;
+
+    }
+
     protected function products( Request $request, $sortBy = false, $includeMetas = false ) {
 
         $response = new \stdClass();
