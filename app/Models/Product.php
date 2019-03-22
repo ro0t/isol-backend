@@ -39,7 +39,7 @@ class Product extends Model {
 
     protected function featuredProducts() {
 
-        $products = self::select('product.slug', 'product.name', 'product_images.image', 'product.manufacturer_id', 'manufacturer.name')
+        $products = self::select('product.id', 'product.slug', 'product.name', 'product_images.image', 'product.manufacturer_id', 'manufacturer.name as manufacturer')
             ->where('product.featured', 1)
             ->where('product.active', 1)
             ->inRandomOrder();
