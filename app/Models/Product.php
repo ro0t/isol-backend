@@ -15,35 +15,44 @@ class Product extends Model {
     private $metas = [];
     private $manufacturerMetas = [];
 
-    private function getCategoryPossibilities( Request $request ) {
-        $ids = [];
+    private $productCategory = null;
+    private $childCategories = [];
 
-        if( $request->has('child') ) {
-            // Third, final level.
-            $category = $request->get('child');
-            $productCategory = ProductCategory::where('slug', $category)->pluck('id');
-            $ids[] = $productCategory[0];
-        } else if ( $request->has('subcategory') ) {
-            // Second level, can have children
-            $category = $request->get('subcategory');
-            $productCategory = ProductCategory::where('slug', $category)->pluck('id');
-            $ids = ProductCategory::getParentsAndChildrenIds($productCategory[0]);
-        } else if( $request->has('category') ) {
-            // Top level, most likely has children
-            $category = $request->get('category');
-            $productCategory = ProductCategory::where('slug', $category)->pluck('id');
-            $ids = ProductCategory::getParentsAndChildrenIds($productCategory[0]);
+    private function categories( Request $request ) {
+
+        if( $request->has('category') ) {
+
+            $slug = $request->get('category');
+
+            if( $slug === 'vorur' ) {
+                return ($this->childCategories = ProductCategory::getParents('order'));
+            }
+
+            $this->productCategory = ProductCategory::where('slug', $slug)->pluck('id');
+
+            if($this->productCategory) {
+                $this->childCategories = ProductCategory::getChildren($this->productCategory);
+            }
         }
 
-        return count($ids) > 0 ? $ids : false;
     }
 
     protected function products( Request $request, $sortBy = false, $includeMetas = false ) {
 
         $response = new \stdClass();
+        $response->categories = [];
+        $response->products = [];
+        $response->metas = [];
+
+        // Initialize category data
+        $this->categories($request);
+
+        if( count($this->childCategories) > 0 ) {
+            $response->categories = $this->childCategories;
+            return $response;
+        }
 
         $page = $request->has('page') ? $request->get('page') : 1;
-        $category = $this->getCategoryPossibilities($request);
         $manufacturer = $request->has('manufacturer') ? $request->get('manufacturer') : null;
         $searchQuery = $request->has('q') ? $request->get('q') : null;
 
@@ -71,8 +80,8 @@ class Product extends Model {
                     })
                     ->limit(PAGE_SIZE, $page);
 
-        if( $category ) {
-            $products->whereIn('product_category_id', $category);
+        if( $this->productCategory != null ) {
+            $products->whereIn('product_category_id', $this->productCategory);
         }
 
         if( $manufacturer ) {

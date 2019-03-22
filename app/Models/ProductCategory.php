@@ -11,11 +11,11 @@ class ProductCategory extends Model {
     // Allow us to set the ID to slug
     public $incrementing = false;
 
-    protected function getParents() {
+    protected function getParents($orderBy = 'id') {
 
         return self::where('active', 1)
             ->where('parent', 0)
-            ->orderBy('id', 'ASC')
+            ->orderBy($orderBy, 'ASC')
             ->get();
 
     }

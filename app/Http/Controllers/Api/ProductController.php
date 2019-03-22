@@ -32,6 +32,7 @@ class ProductController extends ResponseController {
         $response = Product::products($request, 'model_number', true);
 
         return $this->json([
+            'categories' => $response->categories,
             'products' => $response->products,
             'meta' => $response->metas
         ]);
