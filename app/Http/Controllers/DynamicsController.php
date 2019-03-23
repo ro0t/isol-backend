@@ -6,47 +6,63 @@ use App\IGW\ISoapClient;
 use App\Models\Product;
 use App\Models\ProductNavisionData;
 
-class DynamicsController extends Controller {
+class DynamicsController extends Controller
+{
     protected $client;
     private $startTime;
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->middleware('auth');
 
         $this->startTime = microtime(true);
 
+        $soapOptions = [
+            'ssl' => [
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'crypto_method' => STREAM_CRYPTO_METHOD_TLS_CLIENT
+            ]
+        ];
+
         $this->client = new ISoapClient(
             env('NAV_URL'),
             env('NAV_DOMAIN') . '\\' . env('NAV_USER'),
-            env('NAV_PASS')
+            env('NAV_PASS'),
+            $soapOptions
         );
     }
 
-    public function fullSync() {
+    public function fullSync()
+    {
         $this->breadcrumbs('Products', 'Sync prices');
         return view('modules.products.sync');
     }
 
-    public function singleSync($id) {
+    public function singleSync($id)
+    {
         $product = Product::select('id', 'navision_id', 'active')
             ->whereNotNull('navision_id')
             ->where('id', $id)
             ->where('active', 1)
             ->first();
 
-        if( $product ) {
+        if ($product) {
             $result = $this->syncPrices($product->navision_id);
-            if ($result) { $this->mapResult($product, $result); }
+            if ($result) {
+                $this->mapResult($product, $result);
+            }
             return redirect()->route('products.edit', $product->id);
         } else {
             return \App::abort(500);
         }
     }
 
-    public function sync() {
+    public function sync()
+    {
         // Increase the timeout limit, this request may take some time.
-        set_time_limit(25*60);
+        set_time_limit(25 * 60);
 
         $products = Product::select('id', 'navision_id', 'active')
             ->whereNotNull('navision_id')

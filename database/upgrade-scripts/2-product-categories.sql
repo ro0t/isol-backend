@@ -1,4 +1,5 @@
-update product_category set parent = 0 where id > 0;
+-- update product_category set parent = 0 where id > 0;
+update product_category set parent = 0 where parent is null;
 alter table product_category modify parent int(11) not null default 0;
 
 DELIMITER //

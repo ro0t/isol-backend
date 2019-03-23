@@ -50,8 +50,6 @@ class Product extends Model {
             })
             ->limit(4);
 
-        $products->get();
-
         $products = $products->get();
 
         $products = $products->map(function($product) {
