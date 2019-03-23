@@ -175,10 +175,16 @@ class NTLMStream {
         }
 
         $this->ch = curl_init($path);
+
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_SSLVERSION, 3);
+
         curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
         curl_setopt($this->ch, CURLOPT_HTTPAUTH, CURLAUTH_NTLM);
         curl_setopt($this->ch, CURLOPT_USERPWD, NTLM_USERNAME_PASSWORD);
+        
         $this->buffer = curl_exec($this->ch);
 
         $this->pos = 0;
