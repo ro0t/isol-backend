@@ -21,14 +21,13 @@ class Product extends Model {
     private function categories( Request $request ) {
 
         if( $request->has('category') ) {
+            $id = $request->get('category');
 
-            $slug = $request->get('category');
-
-            if( $slug === 'vorur' ) {
+            if( $id === 'vorur' ) {
                 return ($this->childCategories = ProductCategory::getParents('order'));
             }
 
-            $this->productCategory = ProductCategory::where('slug', $slug)->pluck('id');
+            $this->productCategory = ProductCategory::where('id', $id)->pluck('id');
 
             if($this->productCategory) {
                 $this->childCategories = ProductCategory::getChildren($this->productCategory);

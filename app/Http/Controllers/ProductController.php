@@ -77,7 +77,6 @@ class ProductController extends Controller {
 
         $product = Product::with('navisionData')
             ->where('id', $id)
-            ->where('active', 1)
             ->first();
 
         if(!$product) \App::abort(404);

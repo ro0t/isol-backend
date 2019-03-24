@@ -42,18 +42,12 @@
                                 @endforeach
                             </select>
                         </div>
-
+                        
                         <label class="select--label" for="product_category_id">Product Category</label>
                         <div class="select">
                             <select id="product_category_id" name="product_category_id" required>
                                 <option value="">Choose category</option>
-                                @foreach($categories as $pc)
-                                    <optgroup label="{{$pc->name}}">
-                                        @foreach($pc->children as $childCategory)
-                                        <option value="{{$childCategory->id}}" {!! fselectvalue($childCategory->id, $data, 'product_category_id') !!}>{{$childCategory->name}}</option>
-                                        @endforeach
-                                    </optgroup>
-                                @endforeach
+                                {!! recursive_product_categories($data->product_category_id, $categories) !!}
                             </select>
                         </div>
 

@@ -151,3 +151,41 @@ if( !function_exists('formatPrice') ) {
     }
 
 }
+
+if( !function_exists('concat_str') ) {
+    function concat_str($a, $b) {
+        return $a . $b;
+    }
+}
+
+if( !function_exists('drawOption') ) {
+    function drawOption($id, $label, $selected, $parentName = '') {
+        $isSelected = $id == $selected ? 'selected' : '';
+        $categoryLabel = $parentName != '' ? $parentName . ' » ' . $label : $label;
+        return "<option value='{$id}' {$isSelected}>{$categoryLabel}</option>";
+    }
+}
+
+if ( !function_exists('recursive_product_categories') ) {
+
+    function recursive_product_categories($selectedValue, $categories, $parentName = '') {
+        $html = '';
+
+        if(count($categories) > 0) {
+            foreach($categories as $category) {
+                $html = concat_str($html, drawOption($category->id, $category->name, $selectedValue, $parentName));
+
+                // loop children?
+                if($category->childCount > 0) {
+                    $html = concat_str($html, recursive_product_categories($selectedValue,
+                        $category->children,
+                        $category->name
+                    ));
+                }
+            }
+        }
+
+        return $html;
+    }
+
+}
