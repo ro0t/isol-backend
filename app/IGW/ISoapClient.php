@@ -85,8 +85,6 @@ class ISoapClient extends \SoapClient {
         );
         $this->__last_request_headers = $headers;
 
-        set_time_limit(0);
-
         $ch = curl_init($location);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
@@ -95,13 +93,6 @@ class ISoapClient extends \SoapClient {
         curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
         curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_NTLM);
         curl_setopt($ch, CURLOPT_USERPWD, NTLM_USERNAME_PASSWORD);
-
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-        curl_setopt($ch, CURLOPT_SSLVERSION, 3);
-
-        curl_setopt($ch, CURLOPT_TIMEOUT,300); // 500 seconds
-
         $response = curl_exec($ch);
 
         $this->restoreStreamWrapper();

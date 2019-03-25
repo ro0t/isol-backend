@@ -18,19 +18,10 @@ class DynamicsController extends Controller
 
         $this->startTime = microtime(true);
 
-        $soapOptions = [
-            'ssl' => [
-                'verify_peer' => false,
-                'verify_peer_name' => false,
-                'crypto_method' => STREAM_CRYPTO_METHOD_TLS_CLIENT
-            ]
-        ];
-
         $this->client = new ISoapClient(
             env('NAV_URL'),
             env('NAV_DOMAIN') . '\\' . env('NAV_USER'),
-            env('NAV_PASS'),
-            $soapOptions
+            env('NAV_PASS')
         );
     }
 
