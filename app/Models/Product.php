@@ -72,17 +72,18 @@ class Product extends Model {
         $response->products = [];
         $response->metas = [];
 
+        $searchQuery = $request->has('q') ? $request->get('q') : null;
+
         // Initialize category data
         $this->categories($request);
 
-        if( count($this->childCategories) > 0 ) {
+        if( count($this->childCategories) > 0 && $searchQuery == null ) {
             $response->categories = $this->childCategories;
             return $response;
         }
 
         $page = $request->has('page') ? $request->get('page') : 1;
         $manufacturer = $request->has('manufacturer') ? $request->get('manufacturer') : null;
-        $searchQuery = $request->has('q') ? $request->get('q') : null;
 
         $products = self::select('product.id', 'product.model_number', 'product_images.image', 'product.slug', 'product.name', 'manufacturer.name as manufacturer', 'manufacturer.slug as manslug', 'manufacturer.id as manid', 'manufacturer.image as manimg')
                         ->where('product.active', 1);
